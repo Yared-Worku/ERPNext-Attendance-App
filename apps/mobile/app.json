@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "Attendance Mobile",
+    "slug": "attendance-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "attendance-mobile",
+    "userInterfaceStyle": "automatic",
+    "assetBundlePatterns": []
+  }
+}
