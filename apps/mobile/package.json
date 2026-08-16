@@ -1,0 +1,21 @@
+{
+  "name": "@attendance/mobile",
+  "version": "1.0.0",
+  "main": "src/app/index.tsx",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@attendance/shared-types": "workspace:*",
+    "expo": "~50.0.0",
+    "react": "18.2.0",
+    "react-native": "0.73.0"
+  },
+  "devDependencies": {
+    "@types/react": "~18.2.45",
+    "typescript": "^5.3.3"
+  }
+}
