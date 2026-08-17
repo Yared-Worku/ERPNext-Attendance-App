@@ -6,6 +6,9 @@
     "orientation": "portrait",
     "scheme": "attendance-mobile",
     "userInterfaceStyle": "automatic",
-    "assetBundlePatterns": []
+    "assetBundlePatterns": [],
+    "plugins": [
+      "expo-secure-store"
+    ]
   }
 }
