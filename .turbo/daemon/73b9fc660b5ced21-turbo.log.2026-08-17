@@ -47,3 +47,26 @@
 2026-08-17T13:47:30.744360Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\mobile\\src\\features\\attendance")}
 2026-08-17T13:47:30.744391Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@attendance/mobile"), path: AnchoredSystemPathBuf("apps\\mobile") }}))
 2026-08-17T13:47:30.744427Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2026-08-17T13:48:02.434722Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".turbo\\daemon\\73b9fc660b5ced21-turbo.log.2026-08-17")}
+2026-08-17T13:48:02.434743Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-17T14:24:49.044022Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\mobile\\src\\features\\attendance\\components\\AttendanceView.tsx")}
+2026-08-17T14:24:49.044098Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@attendance/mobile"), path: AnchoredSystemPathBuf("apps\\mobile") }}))
+2026-08-17T14:24:56.439856Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\mobile\\src\\features\\attendance\\components\\AttendanceView.tsx")}
+2026-08-17T14:24:56.439897Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@attendance/mobile"), path: AnchoredSystemPathBuf("apps\\mobile") }}))
+2026-08-17T14:25:10.537345Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\mobile\\src\\features\\attendance\\components\\AttendanceView.tsx")}
+2026-08-17T14:25:10.537379Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@attendance/mobile"), path: AnchoredSystemPathBuf("apps\\mobile") }}))
+2026-08-17T14:25:28.937538Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\mobile\\src\\features\\attendance\\components\\AttendanceView.tsx")}
+2026-08-17T14:25:28.937574Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@attendance/mobile"), path: AnchoredSystemPathBuf("apps\\mobile") }}))
+2026-08-17T14:25:34.050022Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\mobile\\src\\features\\attendance\\components\\AttendanceView.tsx")}
+2026-08-17T14:25:34.050039Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@attendance/mobile"), path: AnchoredSystemPathBuf("apps\\mobile") }}))
+2026-08-17T14:28:06.235837Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\mobile\\src\\features\\attendance\\components\\AttendanceView.tsx")}
+2026-08-17T14:28:06.235862Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@attendance/mobile"), path: AnchoredSystemPathBuf("apps\\mobile") }}))
+2026-08-17T14:49:09.438650Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\mobile\\.expo")}
+2026-08-17T14:49:09.438794Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@attendance/mobile"), path: AnchoredSystemPathBuf("apps\\mobile") }}))
+2026-08-17T14:49:09.971807Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2026-08-17T14:49:12.043996Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\mobile\\.expo")}
+2026-08-17T14:49:12.044034Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@attendance/mobile"), path: AnchoredSystemPathBuf("apps\\mobile") }}))
+2026-08-17T14:49:12.292910Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2026-08-17T14:50:12.644712Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\mobile\\.expo")}
+2026-08-17T14:50:12.644843Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@attendance/mobile"), path: AnchoredSystemPathBuf("apps\\mobile") }}))
+2026-08-17T14:50:12.904152Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
