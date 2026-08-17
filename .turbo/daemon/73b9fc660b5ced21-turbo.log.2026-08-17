@@ -70,3 +70,30 @@
 2026-08-17T14:50:12.644712Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\mobile\\.expo")}
 2026-08-17T14:50:12.644843Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@attendance/mobile"), path: AnchoredSystemPathBuf("apps\\mobile") }}))
 2026-08-17T14:50:12.904152Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2026-08-17T15:38:52.067410Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".turbo\\daemon\\73b9fc660b5ced21-turbo.log.2026-08-17")}
+2026-08-17T15:38:52.067487Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-17T15:51:40.662292Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("_tmp_36888_9f60f8a9f28b7b57587a7fa4c7d56d07")}
+2026-08-17T15:51:40.662320Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-17T15:51:40.763647Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(""), AnchoredSystemPathBuf("_tmp_36888_9f60f8a9f28b7b57587a7fa4c7d56d07")}
+2026-08-17T15:51:40.763743Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-17T15:51:51.462644Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".pnpm-lock.yaml.36888.d4b147a2-75a6-4d18-be09-cae2cc30afbf.tmp")}
+2026-08-17T15:51:51.462667Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-17T15:51:51.558573Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".pnpm-lock.yaml.36888.d4b147a2-75a6-4d18-be09-cae2cc30afbf.tmp"), AnchoredSystemPathBuf(""), AnchoredSystemPathBuf("pnpm-lock.yaml")}
+2026-08-17T15:51:51.558721Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-17T15:51:51.772277Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\mobile\\node_modules")}
+2026-08-17T15:51:51.772347Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@attendance/mobile"), path: AnchoredSystemPathBuf("apps\\mobile") }}))
+2026-08-17T15:51:51.941490Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2026-08-17T15:51:52.942223Z  WARN turborepo_lib::package_changes_watcher: file event lagged
+2026-08-17T15:51:52.942242Z  WARN turborepo_lib::package_changes_watcher: file event lagged
+2026-08-17T15:51:53.245782Z  WARN turborepo_lib::package_changes_watcher: file event lagged
+2026-08-17T15:51:55.857864Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\mobile\\node_modules")}
+2026-08-17T15:51:55.857884Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@attendance/mobile"), path: AnchoredSystemPathBuf("apps\\mobile") }}))
+2026-08-17T15:51:55.992307Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2026-08-17T15:51:56.171945Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\mobile"), AnchoredSystemPathBuf("apps\\mobile\\package.json"), AnchoredSystemPathBuf("node_modules"), AnchoredSystemPathBuf("apps\\mobile\\package.json.4101502177")}
+2026-08-17T15:51:56.171972Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }, WorkspacePackage { name: Other("@attendance/mobile"), path: AnchoredSystemPathBuf("apps\\mobile") }}))
+2026-08-17T15:53:12.860937Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".turbo\\daemon\\73b9fc660b5ced21-turbo.log.2026-08-17")}
+2026-08-17T15:53:12.860961Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-17T15:55:24.759083Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\mobile\\src\\shared\\services"), AnchoredSystemPathBuf("apps\\mobile\\src\\shared\\services\\auth.ts")}
+2026-08-17T15:55:24.759267Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@attendance/mobile"), path: AnchoredSystemPathBuf("apps\\mobile") }}))
+2026-08-17T15:55:45.958638Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps\\mobile\\src\\shared\\services\\auth.ts")}
+2026-08-17T15:55:45.958671Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@attendance/mobile"), path: AnchoredSystemPathBuf("apps\\mobile") }}))
