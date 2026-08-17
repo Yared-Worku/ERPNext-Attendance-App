@@ -1,12 +1,14 @@
 {
-  "compilerOptions": {
+  "compilerOptions": 
+  {
     "target": "ES2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "jsx": "react-jsx",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["node"]
   },
   "include": [
     "src/**/*"

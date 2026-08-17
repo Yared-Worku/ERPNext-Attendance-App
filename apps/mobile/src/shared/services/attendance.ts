@@ -1,3 +1,5 @@
+import { API_ENDPOINTS, API_TIMEOUT_MS } from '../constants/config';
+
 export interface AttendancePayload {
   logType: 'IN' | 'OUT';
   latitude: number;
@@ -5,14 +7,12 @@ export interface AttendancePayload {
   timestamp: string;
 }
 
-const API_BASE_URL = 'http://10.53.19.40:8000';
-
 export async function postAttendance(payload: AttendancePayload) {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000); // 10-second timeout
+  const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
 
   try {
-    const response = await fetch(`${API_BASE_URL}/api/method/attendance.api.record_log`, {
+    const response = await fetch(API_ENDPOINTS.RECORD_ATTENDANCE, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
