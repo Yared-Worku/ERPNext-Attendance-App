@@ -1,35 +1,43 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View } from 'react-native';
+import { Button, Text, ActivityIndicator, Surface } from 'react-native-paper';
 import { useAttendance } from '../hooks/useAttendance';
-import { styles } from '../styles/attendance.styles';
 
 export function AttendanceView() {
   const { loading, statusMessage, handleAttendance } = useAttendance();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Attendance Mobile App</Text>
-      <Text style={styles.status}>{statusMessage}</Text>
+    <Surface style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
+      <Text variant="headlineMedium" style={{ fontWeight: 'bold', marginBottom: 8 }}>
+        Attendance Mobile App
+      </Text>
+      <Text variant="bodyLarge" style={{ color: '#6e6e73', marginBottom: 24, textAlign: 'center' }}>
+        {statusMessage}
+      </Text>
 
       {loading ? (
-        <ActivityIndicator size="large" color="#0066cc" style={styles.loader} />
+        <ActivityIndicator animating size="large" color="#0066cc" />
       ) : (
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={[styles.button, styles.btnIn]}
+        <View style={{ flexDirection: 'row', gap: 12 }}>
+          <Button
+            mode="contained"
+            buttonColor="#2e7d32"
+            contentStyle={{ height: 48 }}
             onPress={() => handleAttendance('IN')}
           >
-            <Text style={styles.buttonText}>CHECK IN</Text>
-          </TouchableOpacity>
+            CHECK IN
+          </Button>
 
-          <TouchableOpacity
-            style={[styles.button, styles.btnOut]}
+          <Button
+            mode="contained"
+            buttonColor="#c62828"
+            contentStyle={{ height: 48 }}
             onPress={() => handleAttendance('OUT')}
           >
-            <Text style={styles.buttonText}>CHECK OUT</Text>
-          </TouchableOpacity>
+            CHECK OUT
+          </Button>
         </View>
       )}
-    </View>
+    </Surface>
   );
 }
