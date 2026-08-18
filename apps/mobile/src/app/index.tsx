@@ -8,8 +8,8 @@
 import React from 'react';
 import { ActivityIndicator, Surface } from 'react-native-paper';
 import { AttendanceView } from '../features/attendance/components/AttendanceView';
-import LoginScreen from '../features/attendance/components/login';
-import { useLogin } from '../features/attendance/hooks/useLogin';
+import LoginScreen from '../features/auth/components/login';
+import { useLogin } from '../features/auth/hooks/useLogin';
 
 export default function Page() {
   const authProps = useLogin();
