@@ -1,38 +1,48 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
-import { TextInput, Button, Text, Surface, HelperText } from 'react-native-paper';
-import { useLogin } from '../hooks/useLogin';
+import { StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { Surface, Text, TextInput, Button, ActivityIndicator, HelperText } from 'react-native-paper';
 
-export default function LoginScreen() {
+interface LoginScreenProps {
+  serverUrl: string;
+  setServerUrl: (val: string) => void;
+  username: string;
+  setUsername: (val: string) => void;
+  password: string;
+  setPassword: (val: string) => void;
+  loading: boolean;
+  errorMessage: string;
+  handleLogin: () => void;
+}
+
+export default function LoginScreen({
+  serverUrl,
+  setServerUrl,
+  username,
+  setUsername,
+  password,
+  setPassword,
+  loading,
+  errorMessage,
+  handleLogin,
+}: LoginScreenProps) {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const {
-    serverUrl,
-    setServerUrl,
-    username,
-    setUsername,
-    password,
-    setPassword,
-    loading,
-    errorMessage,
-    handleLogin,
-  } = useLogin();
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
+      style={{ flex: 1 }}
     >
-      <Surface style={styles.card} elevation={2}>
+      <Surface style={styles.container}>
         <Text variant="headlineMedium" style={styles.title}>
           ERPNext Attendance
         </Text>
-        <Text variant="bodyMedium" style={styles.subtitle}>
+        <Text variant="bodyLarge" style={styles.subtitle}>
           Sign in to your organization account
         </Text>
 
-        {/* ERPNext Server URL Input */}
         <TextInput
           label="ERPNext Server URL"
+          placeholder="https://your-domain.com"
           value={serverUrl}
           onChangeText={setServerUrl}
           mode="outlined"
@@ -41,7 +51,6 @@ export default function LoginScreen() {
           style={styles.input}
         />
 
-        {/* Username Input */}
         <TextInput
           label="Username / Email"
           value={username}
@@ -51,7 +60,6 @@ export default function LoginScreen() {
           style={styles.input}
         />
 
-        {/* Password Input */}
         <TextInput
           label="Password"
           value={password}
@@ -67,24 +75,25 @@ export default function LoginScreen() {
           style={styles.input}
         />
 
-        {/* Error Message Display */}
         {!!errorMessage && (
           <HelperText type="error" visible={true} style={styles.error}>
             {errorMessage}
           </HelperText>
         )}
 
-        {/* Submit Button */}
-        <Button
-          mode="contained"
-          onPress={handleLogin}
-          loading={loading}
-          disabled={loading}
-          style={styles.button}
-          contentStyle={styles.buttonContent}
-        >
-          Sign In
-        </Button>
+        {loading ? (
+          <ActivityIndicator animating size="large" color="#0066cc" style={styles.loader} />
+        ) : (
+          <Button
+            mode="contained"
+            buttonColor="#0066cc"
+            contentStyle={{ height: 48 }}
+            onPress={handleLogin}
+            style={styles.button}
+          >
+            SIGN IN
+          </Button>
+        )}
       </Surface>
     </KeyboardAvoidingView>
   );
@@ -95,34 +104,27 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: '#f5f5f5',
-  },
-  card: {
-    padding: 24,
-    borderRadius: 12,
-    backgroundColor: '#ffffff',
   },
   title: {
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 4,
+    marginBottom: 8,
   },
   subtitle: {
-    textAlign: 'center',
-    color: '#666',
+    color: '#6e6e73',
     marginBottom: 24,
+    textAlign: 'center',
   },
   input: {
     marginBottom: 12,
   },
   button: {
     marginTop: 8,
-    borderRadius: 8,
-  },
-  buttonContent: {
-    paddingVertical: 6,
   },
   error: {
     marginBottom: 8,
+  },
+  loader: {
+    marginVertical: 16,
   },
 });

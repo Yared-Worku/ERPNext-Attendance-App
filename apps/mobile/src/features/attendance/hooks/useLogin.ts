@@ -1,18 +1,37 @@
-import { useState } from 'react';
-import { useRouter } from 'expo-router';
-import { loginToERPNext, LoginCredentials } from '../../../shared/services/auth';
+import { useState, useEffect } from 'react';
+import { Alert } from 'react-native';
+import { getSavedSession, loginToERPNext } from '../../../shared/services/auth';
 
 export function useLogin() {
-  const router = useRouter();
-  const [serverUrl, setServerUrl] = useState('https://your-erpnext-domain.com');
+  const [isCheckingSession, setIsCheckingSession] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [serverUrl, setServerUrl] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  // Auto-check saved session on mount (matching useAttendance permission check pattern)
+  useEffect(() => {
+    (async () => {
+      try {
+        const { serverUrl: savedUrl, user: savedUser } = await getSavedSession();
+        if (savedUrl && savedUser) {
+          setIsAuthenticated(true);
+        }
+      } catch {
+        setIsAuthenticated(false);
+      } finally {
+        setIsCheckingSession(false);
+      }
+    })();
+  }, []);
 
   const handleLogin = async () => {
     if (!serverUrl || !username || !password) {
-      setErrorMessage('Please fill in all fields.');
+      const msg = 'Please enter Server URL, Username, and Password.';
+      setErrorMessage(msg);
+      Alert.alert('Validation Error', msg);
       return;
     }
 
@@ -26,24 +45,26 @@ export function useLogin() {
         pwd: password,
       });
 
-      // Navigate to main attendance screen on success
-      router.replace('/');
+      setIsAuthenticated(true);
     } catch (error: any) {
-      const msg = error.response?.data?.message || error.message || 'Login failed.';
-      setErrorMessage(msg);
+      const message = error.message || 'Failed to submit login';
+      setErrorMessage(`Error: ${message}`);
+      Alert.alert('Login Error', message);
     } finally {
       setLoading(false);
     }
   };
 
   return {
+    isCheckingSession,
+    isAuthenticated,
+    loading,
     serverUrl,
     setServerUrl,
     username,
     setUsername,
     password,
     setPassword,
-    loading,
     errorMessage,
     handleLogin,
   };
