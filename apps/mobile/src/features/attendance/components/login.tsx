@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 import { Surface, Text, TextInput, Button, ActivityIndicator, HelperText } from 'react-native-paper';
 
 interface LoginScreenProps {
@@ -32,11 +32,11 @@ export default function LoginScreen({
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
     >
-      <Surface style={styles.container}>
-        <Text variant="headlineMedium" style={styles.title}>
+      <Surface style={{ flex: 1, justifyContent: 'center', padding: 20 }}>
+        <Text variant="headlineMedium" style={{ fontWeight: 'bold', textAlign: 'center', marginBottom: 8 }}>
           ERPNext Attendance
         </Text>
-        <Text variant="bodyLarge" style={styles.subtitle}>
+        <Text variant="bodyLarge" style={{ color: '#6e6e73', marginBottom: 24, textAlign: 'center' }}>
           Sign in to your organization account
         </Text>
 
@@ -48,7 +48,7 @@ export default function LoginScreen({
           mode="outlined"
           autoCapitalize="none"
           keyboardType="url"
-          style={styles.input}
+          style={{ marginBottom: 12 }}
         />
 
         <TextInput
@@ -57,7 +57,7 @@ export default function LoginScreen({
           onChangeText={setUsername}
           mode="outlined"
           autoCapitalize="none"
-          style={styles.input}
+          style={{ marginBottom: 12 }}
         />
 
         <TextInput
@@ -72,24 +72,24 @@ export default function LoginScreen({
               onPress={() => setSecureTextEntry(!secureTextEntry)}
             />
           }
-          style={styles.input}
+          style={{ marginBottom: 12 }}
         />
 
         {!!errorMessage && (
-          <HelperText type="error" visible={true} style={styles.error}>
+          <HelperText type="error" visible={true} style={{ marginBottom: 8 }}>
             {errorMessage}
           </HelperText>
         )}
 
         {loading ? (
-          <ActivityIndicator animating size="large" color="#0066cc" style={styles.loader} />
+          <ActivityIndicator animating size="large" color="#0066cc" style={{ marginVertical: 16 }} />
         ) : (
           <Button
             mode="contained"
             buttonColor="#0066cc"
             contentStyle={{ height: 48 }}
             onPress={handleLogin}
-            style={styles.button}
+            style={{ marginTop: 8 }}
           >
             SIGN IN
           </Button>
@@ -98,33 +98,3 @@ export default function LoginScreen({
     </KeyboardAvoidingView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-  },
-  title: {
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  subtitle: {
-    color: '#6e6e73',
-    marginBottom: 24,
-    textAlign: 'center',
-  },
-  input: {
-    marginBottom: 12,
-  },
-  button: {
-    marginTop: 8,
-  },
-  error: {
-    marginBottom: 8,
-  },
-  loader: {
-    marginVertical: 16,
-  },
-});
