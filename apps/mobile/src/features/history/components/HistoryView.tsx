@@ -85,6 +85,7 @@
 //   );
 // }
 
+
 import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Surface, Text, ActivityIndicator, Chip, Button, DataTable } from 'react-native-paper';
@@ -182,6 +183,11 @@ export function HistoryView() {
                       <Text variant="bodySmall" style={{ color: '#6e6e73', fontSize: 10 }}>
                         {formattedDate}
                       </Text>
+                      {item.location ? (
+                        <Text variant="bodySmall" style={{ color: '#0066cc', fontSize: 9 }}>
+                          📍 {item.location}
+                        </Text>
+                      ) : null}
                     </View>
                   </DataTable.Cell>
                   <DataTable.Cell numeric>
