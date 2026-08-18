@@ -17,6 +17,7 @@ export async function postAttendance(payload: AttendancePayload) {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include', // Includes ERPNext session cookie (sid)
       body: JSON.stringify({
         log_type: payload.logType,
         latitude: payload.latitude,
@@ -37,7 +38,7 @@ export async function postAttendance(payload: AttendancePayload) {
   } catch (error: any) {
     clearTimeout(timeoutId);
     if (error.name === 'AbortError') {
-      throw new Error('Connection timed out. Ensure the backend server is running on port 8000.');
+      throw new Error('Connection timed out. Ensure the backend server is reachable.');
     }
     throw error;
   }
