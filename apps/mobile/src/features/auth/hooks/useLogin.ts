@@ -28,7 +28,7 @@ export function useLogin() {
 
   const handleLogin = async () => {
     if (!serverUrl || !username || !password) {
-      const msg = 'Please enter Server URL, Username, and Password.';
+      const msg = 'Please enter Server URL, Username and Password.';
       setErrorMessage(msg);
       Alert.alert('Validation Error', msg);
       return;
@@ -57,7 +57,7 @@ export function useLogin() {
   return {
     isCheckingSession,
     isAuthenticated,
-    setIsAuthenticated, // Exposing setter fixes the TS error in index.tsx
+    setIsAuthenticated, 
     loading,
     serverUrl,
     setServerUrl,
