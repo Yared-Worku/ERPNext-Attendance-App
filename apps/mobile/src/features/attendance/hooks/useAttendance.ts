@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import * as Location from 'expo-location';
 import { postAttendance } from '../../../shared/services/attendance';
+import { logoutERPNext } from '../../../shared/services/auth';
 
-export function useAttendance() {
+export function useAttendance(onLogoutSuccess?: () => void) {
   const [loading, setLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState('Ready for IN / OUT actions');
   const [locationPermission, setLocationPermission] = useState<boolean | null>(null);
@@ -50,9 +51,21 @@ export function useAttendance() {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await logoutERPNext();
+      if (onLogoutSuccess) {
+        onLogoutSuccess();
+      }
+    } catch {
+      Alert.alert('Logout Error', 'Could not clear saved session.');
+    }
+  };
+
   return {
     loading,
     statusMessage,
     handleAttendance,
+    handleLogout,
   };
 }

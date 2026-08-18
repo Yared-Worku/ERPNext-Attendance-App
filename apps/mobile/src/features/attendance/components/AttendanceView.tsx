@@ -3,8 +3,12 @@ import { View } from 'react-native';
 import { Button, Text, ActivityIndicator, Surface } from 'react-native-paper';
 import { useAttendance } from '../hooks/useAttendance';
 
-export function AttendanceView() {
-  const { loading, statusMessage, handleAttendance } = useAttendance();
+interface AttendanceViewProps {
+  onLogout?: () => void;
+}
+
+export function AttendanceView({ onLogout }: AttendanceViewProps) {
+  const { loading, statusMessage, handleAttendance, handleLogout } = useAttendance(onLogout);
 
   return (
     <Surface style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
@@ -18,23 +22,34 @@ export function AttendanceView() {
       {loading ? (
         <ActivityIndicator animating size="large" color="#0066cc" />
       ) : (
-        <View style={{ flexDirection: 'row', gap: 12 }}>
-          <Button
-            mode="contained"
-            buttonColor="#2e7d32"
-            contentStyle={{ height: 48 }}
-            onPress={() => handleAttendance('IN')}
-          >
-            CHECK IN
-          </Button>
+        <View style={{ gap: 16, width: '100%', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', gap: 12 }}>
+            <Button
+              mode="contained"
+              buttonColor="#2e7d32"
+              contentStyle={{ height: 48 }}
+              onPress={() => handleAttendance('IN')}
+            >
+              CHECK IN
+            </Button>
+
+            <Button
+              mode="contained"
+              buttonColor="#c62828"
+              contentStyle={{ height: 48 }}
+              onPress={() => handleAttendance('OUT')}
+            >
+              CHECK OUT
+            </Button>
+          </View>
 
           <Button
-            mode="contained"
-            buttonColor="#c62828"
-            contentStyle={{ height: 48 }}
-            onPress={() => handleAttendance('OUT')}
+            mode="outlined"
+            textColor="#c62828"
+            style={{ marginTop: 20, borderColor: '#c62828' }}
+            onPress={handleLogout}
           >
-            CHECK OUT
+            LOG OUT
           </Button>
         </View>
       )}

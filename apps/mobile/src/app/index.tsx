@@ -4,7 +4,6 @@
 // export default function Page() {
 //   return <AttendanceView />;
 // }
-
 import React from 'react';
 import { ActivityIndicator, Surface } from 'react-native-paper';
 import { AttendanceView } from '../features/attendance/components/AttendanceView';
@@ -26,5 +25,5 @@ export default function Page() {
     return <LoginScreen {...authProps} />;
   }
 
-  return <AttendanceView />;
+  return <AttendanceView onLogout={() => authProps.setIsAuthenticated(false)} />;
 }
