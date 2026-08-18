@@ -12,7 +12,7 @@
     "@attendance/shared-types": "workspace:*",
     "@babel/runtime": "^7.29.7",
     "axios": "^1.19.0",
-    "expo": "~50.0.21",
+    "expo": "~57.0.13",
     "expo-constants": "^57.0.11",
     "expo-linking": "^57.0.6",
     "expo-location": "^16.5.5",
