@@ -58,7 +58,11 @@ export function debugDumpDatabase() {
   try {
     const rows = db.getAllSync('SELECT * FROM pending_attendance;');
     console.log('=== SQLITE PENDING ATTENDANCE TABLE ===');
-    console.table(rows);
+    if (rows.length === 0) {
+      console.log('No pending logs in local SQLite database.');
+    } else {
+      console.log(JSON.stringify(rows, null, 2));
+    }
   } catch (error) {
     console.error('Failed to dump SQLite DB:', error);
   }
