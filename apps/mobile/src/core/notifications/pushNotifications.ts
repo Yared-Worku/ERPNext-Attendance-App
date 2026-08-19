@@ -1,24 +1,34 @@
-import * as Notifications from 'expo-notifications';
+import Constants, { ExecutionEnvironment } from 'expo-constants';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
 
-// Configure notification behavior for SDK 54+
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowBanner: true,
-    shouldShowList: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
-});
+const isExpoGo = Constants.executionEnvironment === ExecutionEnvironment.StoreClient;
+
+// Safely load expo-notifications only when NOT in Expo Go
+let Notifications: typeof import('expo-notifications') | null = null;
+
+if (!isExpoGo) {
+  Notifications = require('expo-notifications');
+  Notifications?.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowBanner: true,
+      shouldShowList: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+    }),
+  });
+}
 
 export async function registerForPushNotificationsAsync(): Promise<string | null> {
+  if (isExpoGo || !Notifications) {
+    return null;
+  }
+
   if (!Device.isDevice) {
     console.log('Push notifications require a physical device');
     return null;
   }
 
-  // Android Notification Channels
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync('default', {
       name: 'default',
@@ -28,7 +38,6 @@ export async function registerForPushNotificationsAsync(): Promise<string | null
     });
   }
 
-  // Check / Request Permissions
   const { status: existingStatus } = await Notifications.getPermissionsAsync();
   let finalStatus = existingStatus;
 
@@ -38,13 +47,11 @@ export async function registerForPushNotificationsAsync(): Promise<string | null
   }
 
   if (finalStatus !== 'granted') {
-    console.warn('Push notification permission denied by user.');
     return null;
   }
 
   try {
     const tokenData = await Notifications.getExpoPushTokenAsync();
-    console.log('Device Push Token:', tokenData.data);
     return tokenData.data;
   } catch (error) {
     console.error('Failed to get Expo Push Token:', error);
@@ -52,10 +59,22 @@ export async function registerForPushNotificationsAsync(): Promise<string | null
   }
 }
 
-export async function syncPushTokenToBackend(token: string): Promise<void> {
-  try {
-    console.log('Syncing Push Token to backend:', token);
-  } catch (error) {
-    console.error('Failed to sync push token with server:', error);
+export async function sendLocalNotification(title: string, body: string) {
+  if (isExpoGo || !Notifications) {
+    console.log(`[Expo Go Notification Mock] ${title}: ${body}`);
+    return;
   }
+
+  try {
+    await Notifications.scheduleNotificationAsync({
+      content: { title, body },
+      trigger: null,
+    });
+  } catch (error) {
+    console.warn('Local notification error:', error);
+  }
+}
+
+export async function syncPushTokenToBackend(token: string): Promise<void> {
+  console.log('Syncing Push Token to backend:', token);
 }
