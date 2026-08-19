@@ -150,8 +150,8 @@ export function AttendanceView({ onLogout }: AttendanceViewProps) {
 
           <Button
             mode="outlined"
-            textColor="#555555"
-            style={{ borderColor: '#cccccc', width: '100%' }}
+            textColor="#c62828"
+            style={{ borderColor: '#c62828', width: '100%' }}
             contentStyle={{ height: 44 }}
             onPress={handleLogout}
           >
