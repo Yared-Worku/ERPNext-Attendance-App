@@ -9,7 +9,8 @@
     "assetBundlePatterns": [],
     "plugins": [
       "expo-secure-store",
-      "expo-router"
+      "expo-router",
+      "expo-sqlite"
     ],
     "android": {
       "package": "com.anonymous.attendancemobile"
