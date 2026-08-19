@@ -85,11 +85,11 @@ export function useAttendance(onLogoutSuccess?: () => void) {
         await refreshPendingCount();
 
     if (result.syncedCount > 0) {
-  await sendLocalNotification(
+     await sendLocalNotification(
     'Sync Successful',
     `Uploaded ${result.syncedCount} offline attendance log(s) to server.`
   );
-}
+    }
       setStatusMessage(`Sync complete. ${result.syncedCount} uploaded, ${result.failedCount} failed.`);
       Alert.alert('Sync Finished', `Uploaded ${result.syncedCount} queued log(s).`);
     } catch (error: any) {

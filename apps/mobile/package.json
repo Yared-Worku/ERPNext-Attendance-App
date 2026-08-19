@@ -17,6 +17,7 @@
     "expo-constants": "~18.0.14",
     "expo-device": "~8.0.10",
     "expo-linking": "~8.0.12",
+    "expo-local-authentication": "~17.0.9",
     "expo-location": "~19.0.8",
     "expo-notifications": "~0.32.17",
     "expo-router": "~6.0.24",
