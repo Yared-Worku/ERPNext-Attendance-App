@@ -10,6 +10,7 @@ import {
   debugDumpDatabase 
 } from '../../../core/database/attendanceStorage';
 import { syncPendingAttendance } from '../../../core/sync/attendanceSync';
+import { authenticateWithBiometrics } from '../../../core/biometrics/biometrics';
 
 export function useAttendance(onLogoutSuccess?: () => void) {
   const [loading, setLoading] = useState(false);
@@ -38,10 +39,21 @@ export function useAttendance(onLogoutSuccess?: () => void) {
       return;
     }
 
+    // 1. Biometric Verification Check
+    const authenticated = await authenticateWithBiometrics(
+      `Confirm your identity to Check ${type}`
+    );
+
+    if (!authenticated) {
+      Alert.alert('Authentication Failed', 'Biometric verification is required to log attendance.');
+      return;
+    }
+
     setLoading(true);
     setStatusMessage(`Capturing location for ${type}...`);
 
     try {
+      // 2. Acquire GPS Coordinates
       const location = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.High,
       });
@@ -79,17 +91,15 @@ export function useAttendance(onLogoutSuccess?: () => void) {
     setLoading(true);
     setStatusMessage('Syncing queued offline logs...');
     try {
+      const result = await syncPendingAttendance();
+      await refreshPendingCount();
 
-      // Inside handleSyncNow / performSync:
-     const result = await syncPendingAttendance();
-        await refreshPendingCount();
-
-    if (result.syncedCount > 0) {
-     await sendLocalNotification(
-    'Sync Successful',
-    `Uploaded ${result.syncedCount} offline attendance log(s) to server.`
-  );
-    }
+      if (result.syncedCount > 0) {
+        await sendLocalNotification(
+          'Sync Successful',
+          `Uploaded ${result.syncedCount} offline attendance log(s) to server.`
+        );
+      }
       setStatusMessage(`Sync complete. ${result.syncedCount} uploaded, ${result.failedCount} failed.`);
       Alert.alert('Sync Finished', `Uploaded ${result.syncedCount} queued log(s).`);
     } catch (error: any) {
