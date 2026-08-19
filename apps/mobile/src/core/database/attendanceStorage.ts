@@ -53,3 +53,13 @@ export async function removePendingLog(id: string): Promise<void> {
 export async function clearPendingLogs(): Promise<void> {
   db.runSync('DELETE FROM pending_attendance;');
 }
+
+export function debugDumpDatabase() {
+  try {
+    const rows = db.getAllSync('SELECT * FROM pending_attendance;');
+    console.log('=== SQLITE PENDING ATTENDANCE TABLE ===');
+    console.table(rows);
+  } catch (error) {
+    console.error('Failed to dump SQLite DB:', error);
+  }
+}

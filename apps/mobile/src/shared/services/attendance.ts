@@ -43,15 +43,20 @@ export async function postAttendance(payload: AttendancePayload) {
     return await response.json();
   } catch (error: any) {
     clearTimeout(timeoutId);
-
-    if (__DEV__) {
-      console.warn('ERPNext endpoint unavailable. Returning Mock response.');
-      await new Promise((resolve) => setTimeout(resolve, 800));
-      return { status: 'success', message: `Mock ${payload.logType} logged` };
-    }
-
-    throw error;
+    // Re-throw the error so useAttendance catches it and saves to SQLite
+    throw new Error('Network request failed. Saved to offline queue.');
   }
+  // catch (error: any) {
+  //   clearTimeout(timeoutId);
+
+  //   if (__DEV__) {
+  //     console.warn('ERPNext endpoint unavailable. Returning Mock response.');
+  //     await new Promise((resolve) => setTimeout(resolve, 800));
+  //     return { status: 'success', message: `Mock ${payload.logType} logged` };
+  //   }
+
+  //   throw error;
+  // }
 }
 
 export async function getAttendanceHistory(): Promise<AttendanceLog[]> {

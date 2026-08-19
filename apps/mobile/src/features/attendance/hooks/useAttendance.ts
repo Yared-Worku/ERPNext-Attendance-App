@@ -71,12 +71,17 @@
 // }
 
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Alert } from 'react-native';
 import * as Location from 'expo-location';
+import NetInfo from '@react-native-community/netinfo';
 import { postAttendance } from '../../../shared/services/attendance';
 import { logoutERPNext } from '../../../shared/services/auth';
-import { savePendingLog, getPendingLogs } from '../../../core/database/attendanceStorage';
+import { 
+  savePendingLog, 
+  getPendingLogs, 
+  debugDumpDatabase 
+} from '../../../core/database/attendanceStorage';
 import { syncPendingAttendance } from '../../../core/sync/attendanceSync';
 
 export function useAttendance(onLogoutSuccess?: () => void) {
@@ -88,8 +93,24 @@ export function useAttendance(onLogoutSuccess?: () => void) {
   const refreshPendingCount = async () => {
     const logs = await getPendingLogs();
     setPendingCount(logs.length);
+    debugDumpDatabase();
   };
 
+  const handleSyncNow = useCallback(async () => {
+    setLoading(true);
+    setStatusMessage('Syncing queued offline logs...');
+    try {
+      const result = await syncPendingAttendance();
+      await refreshPendingCount();
+      setStatusMessage(`Sync complete. ${result.syncedCount} uploaded, ${result.failedCount} failed.`);
+    } catch (error: any) {
+      console.warn('Auto-sync error:', error.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Initial setup: Request location permission & load pending count
   useEffect(() => {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -97,6 +118,17 @@ export function useAttendance(onLogoutSuccess?: () => void) {
       await refreshPendingCount();
     })();
   }, []);
+
+  // Auto-Sync Listener: Triggers automatically when network reconnects
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      if (state.isConnected && state.isInternetReachable && pendingCount > 0 && !loading) {
+        handleSyncNow();
+      }
+    });
+
+    return () => unsubscribe();
+  }, [pendingCount, loading, handleSyncNow]);
 
   const handleAttendance = async (type: 'IN' | 'OUT') => {
     if (!locationPermission) {
@@ -166,8 +198,7 @@ export function useAttendance(onLogoutSuccess?: () => void) {
       Alert.alert('Logout Error', 'Could not clear saved session.');
     }
   };
-
-  return {
+return {
     loading,
     statusMessage,
     pendingCount,

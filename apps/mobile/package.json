@@ -11,6 +11,7 @@
   "dependencies": {
     "@attendance/shared-types": "workspace:*",
     "@babel/runtime": "^7.29.7",
+    "@react-native-community/netinfo": "11.4.1",
     "axios": "^1.19.0",
     "expo": "~54.0.37",
     "expo-constants": "~18.0.14",
