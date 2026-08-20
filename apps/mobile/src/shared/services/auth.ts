@@ -1,4 +1,3 @@
-
 import * as SecureStore from 'expo-secure-store';
 import { API_BASE_URL, API_TIMEOUT_MS } from '../constants/config';
 
@@ -14,8 +13,15 @@ const STORAGE_KEYS = {
 };
 
 export async function loginToERPNext(payload: LoginCredentials) {
-  const baseUrl = (payload.serverUrl || API_BASE_URL).replace(/\/+$/, '');
-  const loginEndpoint = `${baseUrl}/api/method/login`;
+  let rawUrl = (payload.serverUrl || API_BASE_URL).trim().replace(/\/+$/, '');
+
+  if (!/^https?:\/\//i.test(rawUrl)) {
+    rawUrl = `http://${rawUrl}`;
+  }
+
+  const cleanUser = payload.usr.trim().toLowerCase();
+  const cleanPassword = payload.pwd.trim();
+  const loginEndpoint = `${rawUrl}/api/method/login`;
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
@@ -23,32 +29,60 @@ export async function loginToERPNext(payload: LoginCredentials) {
   try {
     const response = await fetch(loginEndpoint, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ usr: payload.usr, pwd: payload.pwd }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Host': 'development.localhost', // Resolves Frappe multi-tenant site routing
+      },
+      body: JSON.stringify({
+        usr: cleanUser,
+        pwd: cleanPassword,
+      }),
       signal: controller.signal,
     });
 
     clearTimeout(timeoutId);
 
-    if (response.ok) {
-      const data = await response.json();
-      if (data.message === 'Logged In') {
-        await SecureStore.setItemAsync(STORAGE_KEYS.SERVER_URL, baseUrl);
-        await SecureStore.setItemAsync(STORAGE_KEYS.USER, payload.usr);
-        return data;
-      }
+    const responseText = await response.text();
+
+    // Check if server returned HTML instead of JSON
+    if (responseText.trim().startsWith('<')) {
+      throw new Error(
+        'Server returned HTML instead of JSON. Ensure "bench set-default-site development.localhost" is set.'
+      );
     }
-    throw new Error('Invalid username or password');
+
+    const data = JSON.parse(responseText);
+
+    if (response.ok && (data.message === 'Logged In' || data.home_page)) {
+      await SecureStore.setItemAsync(STORAGE_KEYS.SERVER_URL, rawUrl);
+      await SecureStore.setItemAsync(STORAGE_KEYS.USER, cleanUser);
+      return data;
+    }
+
+    let serverErrorMsg = 'Invalid username or password';
+    if (data._server_messages) {
+      try {
+        const parsed = JSON.parse(data._server_messages);
+        const msgObj = typeof parsed[0] === 'string' ? JSON.parse(parsed[0]) : parsed[0];
+        serverErrorMsg = msgObj.message || serverErrorMsg;
+      } catch {
+        // Fallback to default message
+      }
+    } else if (data.message) {
+      serverErrorMsg = typeof data.message === 'string' ? data.message : serverErrorMsg;
+    }
+
+    throw new Error(serverErrorMsg);
   } catch (error: any) {
     clearTimeout(timeoutId);
 
-    // Fallback Mock for testing before ERPNext is integrated
-    // if (__DEV__) {
-    //   console.warn('ERPNext unavailable. Falling back to Mock Login.');
-    //   await SecureStore.setItemAsync(STORAGE_KEYS.SERVER_URL, baseUrl);
-    //   await SecureStore.setItemAsync(STORAGE_KEYS.USER, payload.usr);
-    //   return { message: 'Logged In', user: payload.usr };
-    // }
+    if (error.name === 'AbortError') {
+      throw new Error('Connection timed out. Check if server is running.');
+    }
+    if (error.message === 'Network request failed') {
+      throw new Error(`Cannot reach server at ${rawUrl}. Check Wi-Fi connection.`);
+    }
 
     throw error;
   }
