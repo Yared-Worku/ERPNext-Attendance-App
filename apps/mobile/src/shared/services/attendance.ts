@@ -83,41 +83,41 @@ export async function getAttendanceHistory(): Promise<AttendanceLog[]> {
   } catch (error: any) {
     clearTimeout(timeoutId);
 
-    if (__DEV__) {
-      console.warn('ERPNext endpoint unavailable. Returning Mock History.');
-      await new Promise((resolve) => setTimeout(resolve, 600));
-      const now = Date.now();
-      return [
-        {
-          id: '1',
-          logType: 'IN',
-          timestamp: new Date(now - 3600000 * 2).toISOString(),
-          status: 'Success',
-          location: 'Main Office',
-        },
-        {
-          id: '2',
-          logType: 'OUT',
-          timestamp: new Date(now - 3600000 * 9).toISOString(),
-          status: 'Success',
-          location: 'Main Office',
-        },
-        {
-          id: '3',
-          logType: 'IN',
-          timestamp: new Date(now - 3600000 * 26).toISOString(),
-          status: 'Success',
-          location: 'Main Office',
-        },
-        {
-          id: '4',
-          logType: 'OUT',
-          timestamp: new Date(now - 3600000 * 34).toISOString(),
-          status: 'Success',
-          location: 'Main Office',
-        },
-      ];
-    }
+    // if (__DEV__) {
+    //   console.warn('ERPNext endpoint unavailable. Returning Mock History.');
+    //   await new Promise((resolve) => setTimeout(resolve, 600));
+    //   const now = Date.now();
+    //   return [
+    //     {
+    //       id: '1',
+    //       logType: 'IN',
+    //       timestamp: new Date(now - 3600000 * 2).toISOString(),
+    //       status: 'Success',
+    //       location: 'Main Office',
+    //     },
+    //     {
+    //       id: '2',
+    //       logType: 'OUT',
+    //       timestamp: new Date(now - 3600000 * 9).toISOString(),
+    //       status: 'Success',
+    //       location: 'Main Office',
+    //     },
+    //     {
+    //       id: '3',
+    //       logType: 'IN',
+    //       timestamp: new Date(now - 3600000 * 26).toISOString(),
+    //       status: 'Success',
+    //       location: 'Main Office',
+    //     },
+    //     {
+    //       id: '4',
+    //       logType: 'OUT',
+    //       timestamp: new Date(now - 3600000 * 34).toISOString(),
+    //       status: 'Success',
+    //       location: 'Main Office',
+    //     },
+    //   ];
+    // }
 
     throw error;
   }
