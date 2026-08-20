@@ -6,8 +6,8 @@ import { sendLocalNotification } from '../../../core/notifications/pushNotificat
 import { logoutERPNext } from '../../../shared/services/auth';
 import { 
   savePendingLog, 
-  getPendingLogs, 
-  debugDumpDatabase 
+  getPendingLogs
+  // debugDumpDatabase 
 } from '../../../core/database/attendanceStorage';
 import { syncPendingAttendance } from '../../../core/sync/attendanceSync';
 import { authenticateWithBiometrics } from '../../../core/biometrics/biometrics';
@@ -22,7 +22,7 @@ export function useAttendance(onLogoutSuccess?: () => void) {
     const logs = await getPendingLogs();
     setPendingCount(logs.length);
     // Dump local SQLite records to Metro terminal whenever queue refreshes
-    debugDumpDatabase();
+    // debugDumpDatabase();
   };
 
   useEffect(() => {
