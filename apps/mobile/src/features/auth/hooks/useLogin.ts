@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import { getSavedSession, loginToERPNext } from '../../../shared/services/auth';
+import { API_BASE_URL } from '../../../shared/constants/config';
 
 export function useLogin() {
   const [isCheckingSession, setIsCheckingSession] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [serverUrl, setServerUrl] = useState('');
+  const [serverUrl, setServerUrl] = useState(API_BASE_URL);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -15,6 +16,9 @@ export function useLogin() {
     (async () => {
       try {
         const { serverUrl: savedUrl, user: savedUser } = await getSavedSession();
+        if (savedUrl) {
+          setServerUrl(savedUrl);
+        }
         if (savedUrl && savedUser) {
           setIsAuthenticated(true);
         }
@@ -27,8 +31,10 @@ export function useLogin() {
   }, []);
 
   const handleLogin = async () => {
-    if (!serverUrl || !username || !password) {
-      const msg = 'Please enter Server URL, Username and Password.';
+    const targetServer = serverUrl.trim() || API_BASE_URL;
+
+    if (!username || !password) {
+      const msg = 'Please enter Username and Password.';
       setErrorMessage(msg);
       Alert.alert('Validation Error', msg);
       return;
@@ -39,7 +45,7 @@ export function useLogin() {
 
     try {
       await loginToERPNext({
-        serverUrl,
+        serverUrl: targetServer,
         usr: username,
         pwd: password,
       });

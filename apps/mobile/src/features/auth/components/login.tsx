@@ -42,7 +42,6 @@ export default function LoginScreen({
 
         <TextInput
           label="ERPNext Server URL"
-          placeholder="https://your-domain.com"
           value={serverUrl}
           onChangeText={setServerUrl}
           mode="outlined"

@@ -13,7 +13,8 @@ const STORAGE_KEYS = {
 };
 
 export async function loginToERPNext(payload: LoginCredentials) {
-  let rawUrl = (payload.serverUrl || API_BASE_URL).trim().replace(/\/+$/, '');
+  const targetUrl = payload.serverUrl?.trim() || API_BASE_URL;
+  let rawUrl = targetUrl.replace(/\/+$/, '');
 
   if (!/^https?:\/\//i.test(rawUrl)) {
     rawUrl = `http://${rawUrl}`;
@@ -32,7 +33,7 @@ export async function loginToERPNext(payload: LoginCredentials) {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Host': 'development.localhost', // Resolves Frappe multi-tenant site routing
+        'Host': 'development.localhost',
       },
       body: JSON.stringify({
         usr: cleanUser,
@@ -45,7 +46,6 @@ export async function loginToERPNext(payload: LoginCredentials) {
 
     const responseText = await response.text();
 
-    // Check if server returned HTML instead of JSON
     if (responseText.trim().startsWith('<')) {
       throw new Error(
         'Server returned HTML instead of JSON. Ensure "bench set-default-site development.localhost" is set.'
@@ -67,7 +67,7 @@ export async function loginToERPNext(payload: LoginCredentials) {
         const msgObj = typeof parsed[0] === 'string' ? JSON.parse(parsed[0]) : parsed[0];
         serverErrorMsg = msgObj.message || serverErrorMsg;
       } catch {
-        // Fallback to default message
+        // Fallback
       }
     } else if (data.message) {
       serverErrorMsg = typeof data.message === 'string' ? data.message : serverErrorMsg;
