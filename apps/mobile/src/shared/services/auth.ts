@@ -2,19 +2,16 @@ import * as SecureStore from 'expo-secure-store';
 import { API_BASE_URL, API_TIMEOUT_MS } from '../constants/config';
 
 export interface LoginCredentials {
-  serverUrl?: string;
   usr: string;
   pwd: string;
 }
 
 const STORAGE_KEYS = {
-  SERVER_URL: 'erp_server_url',
   USER: 'erp_user',
 };
 
 export async function loginToERPNext(payload: LoginCredentials) {
-  const targetUrl = payload.serverUrl?.trim() || API_BASE_URL;
-  let rawUrl = targetUrl.replace(/\/+$/, '');
+  let rawUrl = API_BASE_URL.trim().replace(/\/+$/, '');
 
   if (!/^https?:\/\//i.test(rawUrl)) {
     rawUrl = `http://${rawUrl}`;
@@ -55,7 +52,6 @@ export async function loginToERPNext(payload: LoginCredentials) {
     const data = JSON.parse(responseText);
 
     if (response.ok && (data.message === 'Logged In' || data.home_page)) {
-      await SecureStore.setItemAsync(STORAGE_KEYS.SERVER_URL, rawUrl);
       await SecureStore.setItemAsync(STORAGE_KEYS.USER, cleanUser);
       return data;
     }
@@ -89,15 +85,13 @@ export async function loginToERPNext(payload: LoginCredentials) {
 }
 
 export async function getSavedSession() {
-  const serverUrl = await SecureStore.getItemAsync(STORAGE_KEYS.SERVER_URL);
   const user = await SecureStore.getItemAsync(STORAGE_KEYS.USER);
   return { 
-    serverUrl: serverUrl || API_BASE_URL, 
+    serverUrl: API_BASE_URL, 
     user 
   };
 }
 
 export async function logoutERPNext() {
-  await SecureStore.deleteItemAsync(STORAGE_KEYS.SERVER_URL);
   await SecureStore.deleteItemAsync(STORAGE_KEYS.USER);
 }

@@ -3,8 +3,6 @@ import { KeyboardAvoidingView, Platform } from 'react-native';
 import { Surface, Text, TextInput, Button, ActivityIndicator, HelperText } from 'react-native-paper';
 
 interface LoginScreenProps {
-  serverUrl: string;
-  setServerUrl: (val: string) => void;
   username: string;
   setUsername: (val: string) => void;
   password: string;
@@ -15,8 +13,6 @@ interface LoginScreenProps {
 }
 
 export default function LoginScreen({
-  serverUrl,
-  setServerUrl,
   username,
   setUsername,
   password,
@@ -39,16 +35,6 @@ export default function LoginScreen({
         <Text variant="bodyLarge" style={{ color: '#6e6e73', marginBottom: 24, textAlign: 'center' }}>
           Sign in to your organization account
         </Text>
-
-        <TextInput
-          label="ERPNext Server URL"
-          value={serverUrl}
-          onChangeText={setServerUrl}
-          mode="outlined"
-          autoCapitalize="none"
-          keyboardType="url"
-          style={{ marginBottom: 12 }}
-        />
 
         <TextInput
           label="Username / Email"
