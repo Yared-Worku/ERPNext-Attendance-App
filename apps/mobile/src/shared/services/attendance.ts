@@ -1,4 +1,5 @@
-import { API_ENDPOINTS, API_TIMEOUT_MS, API_BASE_URL } from '../constants/config';
+import { API_TIMEOUT_MS } from '../constants/config';
+import { getSavedSession } from './auth';
 
 export interface AttendancePayload {
   logType: 'IN' | 'OUT';
@@ -16,109 +17,97 @@ export interface AttendanceLog {
 }
 
 export async function postAttendance(payload: AttendancePayload) {
+  // 1. Fetch saved server URL dynamically
+  const { serverUrl } = await getSavedSession();
+  const endpoint = `${serverUrl}/api/method/hrms.hr.doctype.employee_checkin.employee_checkin.add_log`;
+
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
 
   try {
-    const response = await fetch(API_ENDPOINTS.RECORD_ATTENDANCE, {
+    const response = await fetch(endpoint, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Host': 'development.localhost', // Frappe site routing header
+      },
       credentials: 'include',
       body: JSON.stringify({
         log_type: payload.logType,
         latitude: payload.latitude,
         longitude: payload.longitude,
         time: payload.timestamp,
+        device_id: 'Expo Mobile App',
       }),
       signal: controller.signal,
     });
 
     clearTimeout(timeoutId);
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `Server responded with status ${response.status}`);
+    const responseText = await response.text();
+
+    // Prevent HTML parse errors
+    if (responseText.trim().startsWith('<')) {
+      throw new Error('Server returned HTML page. Check bench site configuration.');
     }
 
-    return await response.json();
+    const data = JSON.parse(responseText);
+
+    if (!response.ok) {
+      const serverMsg = data.exception || data.message || `Server responded with status ${response.status}`;
+      throw new Error(serverMsg);
+    }
+
+    return data;
   } catch (error: any) {
     clearTimeout(timeoutId);
-    // Re-throw the error so useAttendance catches it and saves to SQLite
-    throw new Error('Network request failed. Saved to offline queue.');
+
+    // Preserve offline trigger on network drops or timeouts
+    if (error.name === 'AbortError' || error.message === 'Network request failed') {
+      throw new Error('Network request failed. Saved to offline queue.');
+    }
+
+    throw error;
   }
-  // catch (error: any) {
-  //   clearTimeout(timeoutId);
-
-  //   if (__DEV__) {
-  //     console.warn('ERPNext endpoint unavailable. Returning Mock response.');
-  //     await new Promise((resolve) => setTimeout(resolve, 800));
-  //     return { status: 'success', message: `Mock ${payload.logType} logged` };
-  //   }
-
-  //   throw error;
-  // }
 }
 
 export async function getAttendanceHistory(): Promise<AttendanceLog[]> {
+  const { serverUrl } = await getSavedSession();
+  const endpoint = `${serverUrl}/api/method/hrms.hr.doctype.employee_checkin.employee_checkin.get_checkin_history`;
+
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
 
   try {
-    const response = await fetch(`${API_BASE_URL}/api/method/attendance.api.get_logs`, {
+    const response = await fetch(endpoint, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Host': 'development.localhost',
+      },
       credentials: 'include',
       signal: controller.signal,
     });
 
     clearTimeout(timeoutId);
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `Server responded with status ${response.status}`);
+    const responseText = await response.text();
+
+    if (responseText.trim().startsWith('<')) {
+      throw new Error('Server returned HTML page instead of JSON.');
     }
 
-    const data = await response.json();
-    return data.message || data;
+    const data = JSON.parse(responseText);
+
+    if (!response.ok) {
+      throw new Error(data.message || `Server responded with status ${response.status}`);
+    }
+
+    return data.message || [];
   } catch (error: any) {
     clearTimeout(timeoutId);
-
-    // if (__DEV__) {
-    //   console.warn('ERPNext endpoint unavailable. Returning Mock History.');
-    //   await new Promise((resolve) => setTimeout(resolve, 600));
-    //   const now = Date.now();
-    //   return [
-    //     {
-    //       id: '1',
-    //       logType: 'IN',
-    //       timestamp: new Date(now - 3600000 * 2).toISOString(),
-    //       status: 'Success',
-    //       location: 'Main Office',
-    //     },
-    //     {
-    //       id: '2',
-    //       logType: 'OUT',
-    //       timestamp: new Date(now - 3600000 * 9).toISOString(),
-    //       status: 'Success',
-    //       location: 'Main Office',
-    //     },
-    //     {
-    //       id: '3',
-    //       logType: 'IN',
-    //       timestamp: new Date(now - 3600000 * 26).toISOString(),
-    //       status: 'Success',
-    //       location: 'Main Office',
-    //     },
-    //     {
-    //       id: '4',
-    //       logType: 'OUT',
-    //       timestamp: new Date(now - 3600000 * 34).toISOString(),
-    //       status: 'Success',
-    //       location: 'Main Office',
-    //     },
-    //   ];
-    // }
-
     throw error;
   }
 }
