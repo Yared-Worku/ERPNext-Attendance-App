@@ -152,66 +152,8 @@ export async function postAttendance(payload: AttendancePayload) {
   }
 }
 
+
 export async function getAttendanceHistory(): Promise<AttendanceLog[]> {
-  const { serverUrl, user } = await getSavedSession();
-  const sid = await SecureStore.getItemAsync('erp_sid');
-  const userEmail = user || 'kifle@test.com';
-
-  // 1. Resolve Employee ID (e.g., "HR-EMP-00002")
-  const employeeId = await getEmployeeIdForUser(serverUrl, userEmail, sid);
-
-  // 2. Fetch records directly from Employee Checkin DocType
-  const filters = encodeURIComponent(JSON.stringify([['employee', '=', employeeId]]));
-  const fields = encodeURIComponent(JSON.stringify(['name', 'log_type', 'time', 'device_id']));
-  const endpoint = `${serverUrl}/api/resource/Employee Checkin?filters=${filters}&fields=${fields}&order_by=time desc&limit_page_length=50`;
-
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
-
-  const headers: Record<string, string> = {
-    'Accept': 'application/json',
-    'Host': 'development.localhost',
-  };
-
-  if (sid) {
-    headers['Cookie'] = `sid=${sid}`;
-  }
-
-  try {
-    const response = await fetch(endpoint, {
-      method: 'GET',
-      headers,
-      credentials: 'include',
-      signal: controller.signal,
-    });
-
-    clearTimeout(timeoutId);
-
-    const responseText = await response.text();
-
-    if (responseText.trim().startsWith('<')) {
-      throw new Error('Server returned HTML page instead of JSON.');
-    }
-
-    const data = JSON.parse(responseText);
-
-    if (!response.ok) {
-      throw new Error(data.message || `Server responded with status ${response.status}`);
-    }
-
-    // Map Frappe DB records to mobile app AttendanceLog format
-    return (data.data || []).map((item: any) => ({
-      id: item.name,
-      logType: item.log_type as 'IN' | 'OUT',
-      timestamp: item.time,
-      status: 'Success',
-      location: item.device_id || 'Expo Mobile App',
-    }));
-  } catch (error: any) {
-    clearTimeout(timeoutId);
-    throw error;
-  }
-}export async function getAttendanceHistory(): Promise<AttendanceLog[]> {
   const { serverUrl, user } = await getSavedSession();
   const sid = await SecureStore.getItemAsync('erp_sid');
   const userEmail = user || 'kifle@test.com';
