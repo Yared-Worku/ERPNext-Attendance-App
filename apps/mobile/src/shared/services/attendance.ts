@@ -1,5 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
-import { API_TIMEOUT_MS } from '../constants/config';
+import { API_BASE_URL, API_ENDPOINTS, API_TIMEOUT_MS } from '../constants/config';
 import { getSavedSession } from './auth';
 
 export interface AttendancePayload {
@@ -37,9 +37,9 @@ function formatFrappeDatetime(dateString: string): string {
 /**
  * Retrieves the linked Employee DocName (e.g. "HR-EMP-00002") for a given user email
  */
-async function getEmployeeIdForUser(serverUrl: string, userEmail: string, sid: string | null): Promise<string> {
+async function getEmployeeIdForUser(userEmail: string, sid: string | null): Promise<string> {
   const filters = encodeURIComponent(JSON.stringify([['user_id', '=', userEmail]]));
-  const endpoint = `${serverUrl}/api/resource/Employee?filters=${filters}&fields=["name"]`;
+  const endpoint = `${API_ENDPOINTS.EMPLOYEE_RESOURCE}?filters=${filters}&fields=["name"]`;
 
   const headers: Record<string, string> = {
     'Accept': 'application/json',
@@ -69,15 +69,12 @@ async function getEmployeeIdForUser(serverUrl: string, userEmail: string, sid: s
 }
 
 export async function postAttendance(payload: AttendancePayload) {
-  const { serverUrl, user } = await getSavedSession();
+  const { user } = await getSavedSession();
   const sid = await SecureStore.getItemAsync('erp_sid');
   const userEmail = user || 'kifle@test.com';
 
   // 1. Resolve Employee ID (e.g. "HR-EMP-00002")
-  const employeeId = await getEmployeeIdForUser(serverUrl, userEmail, sid);
-
-  // 2. Call Frappe HRMS whitelisted check-in method
-  const endpoint = `${serverUrl}/api/method/hrms.hr.doctype.employee_checkin.employee_checkin.add_log_based_on_employee_field`;
+  const employeeId = await getEmployeeIdForUser(userEmail, sid);
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
@@ -93,7 +90,7 @@ export async function postAttendance(payload: AttendancePayload) {
   }
 
   try {
-    const response = await fetch(endpoint, {
+    const response = await fetch(API_ENDPOINTS.RECORD_ATTENDANCE, {
       method: 'POST',
       headers,
       credentials: 'include',
@@ -152,18 +149,18 @@ export async function postAttendance(payload: AttendancePayload) {
   }
 }
 
-
 export async function getAttendanceHistory(): Promise<AttendanceLog[]> {
-  const { serverUrl, user } = await getSavedSession();
+  const { user } = await getSavedSession();
   const sid = await SecureStore.getItemAsync('erp_sid');
   const userEmail = user || 'kifle@test.com';
+
   // 1. Resolve Employee ID (e.g., "HR-EMP-00002")
-  const employeeId = await getEmployeeIdForUser(serverUrl, userEmail, sid);
+  const employeeId = await getEmployeeIdForUser(userEmail, sid);
 
   // 2. Fetch records directly from Employee Checkin DocType
   const filters = encodeURIComponent(JSON.stringify([['employee', '=', employeeId]]));
   const fields = encodeURIComponent(JSON.stringify(['name', 'log_type', 'time', 'device_id']));
-  const endpoint = `${serverUrl}/api/resource/Employee Checkin?filters=${filters}&fields=${fields}&order_by=time desc&limit_page_length=50`;
+  const endpoint = `${API_ENDPOINTS.ATTENDANCE_CHECKIN_RESOURCE}?filters=${filters}&fields=${fields}&order_by=time desc&limit_page_length=50`;
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
@@ -199,7 +196,6 @@ export async function getAttendanceHistory(): Promise<AttendanceLog[]> {
       throw new Error(data.message || `Server responded with status ${response.status}`);
     }
 
-    // Map Frappe DB records to mobile app AttendanceLog format
     return (data.data || []).map((item: any) => ({
       id: item.name,
       logType: item.log_type as 'IN' | 'OUT',
