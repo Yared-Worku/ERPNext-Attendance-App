@@ -157,7 +157,6 @@ export async function getAttendanceHistory(): Promise<AttendanceLog[]> {
   const { serverUrl, user } = await getSavedSession();
   const sid = await SecureStore.getItemAsync('erp_sid');
   const userEmail = user || 'kifle@test.com';
-
   // 1. Resolve Employee ID (e.g., "HR-EMP-00002")
   const employeeId = await getEmployeeIdForUser(serverUrl, userEmail, sid);
 
