@@ -1,5 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
-import { API_BASE_URL, API_TIMEOUT_MS } from '../constants/config';
+import { API_BASE_URL, API_ENDPOINTS, API_TIMEOUT_MS } from '../constants/config';
 
 export interface LoginCredentials {
   usr: string;
@@ -11,21 +11,14 @@ const STORAGE_KEYS = {
 };
 
 export async function loginToERPNext(payload: LoginCredentials) {
-  let rawUrl = API_BASE_URL.trim().replace(/\/+$/, '');
-
-  if (!/^https?:\/\//i.test(rawUrl)) {
-    rawUrl = `http://${rawUrl}`;
-  }
-
   const cleanUser = payload.usr.trim().toLowerCase();
   const cleanPassword = payload.pwd.trim();
-  const loginEndpoint = `${rawUrl}/api/method/login`;
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
 
   try {
-    const response = await fetch(loginEndpoint, {
+    const response = await fetch(API_ENDPOINTS.LOGIN, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -77,7 +70,7 @@ export async function loginToERPNext(payload: LoginCredentials) {
       throw new Error('Connection timed out. Check if server is running.');
     }
     if (error.message === 'Network request failed') {
-      throw new Error(`Cannot reach server at ${rawUrl}. Check Wi-Fi connection.`);
+      throw new Error(`Cannot reach server at ${API_BASE_URL}. Check Wi-Fi connection.`);
     }
 
     throw error;
