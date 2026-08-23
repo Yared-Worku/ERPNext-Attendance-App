@@ -1,9 +1,0 @@
-{
-  "name": "@attendance/shared-types",
-  "version": "1.0.0",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
-  "scripts": {
-    "type-check": "tsc --noEmit"
-  }
-}
