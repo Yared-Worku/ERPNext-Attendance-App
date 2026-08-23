@@ -47,6 +47,9 @@ importers:
       react-native:
         specifier: 0.76.0
         version: 0.76.0(@babel/core@7.29.7(supports-color@8.1.1))(@babel/preset-env@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@18.3.31)(react@18.3.1)(supports-color@8.1.1)
+      react-native-css-interop:
+        specifier: ^0.2.6
+        version: 0.2.6(455bb21bd94c1ee5828189befd7ad206)
       react-native-mmkv:
         specifier: ^2.12.2
         version: 2.12.2(react-native@0.76.0(@babel/core@7.29.7(supports-color@8.1.1))(@babel/preset-env@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@18.3.31)(react@18.3.1)(supports-color@8.1.1))(react@18.3.1)
