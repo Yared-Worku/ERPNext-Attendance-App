@@ -1,11 +1,12 @@
 // src/features/attendance/screens/CheckinScreen.tsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../../navigation/types';
 import { useAuthStore } from '../../../store';
 import { useCheckin } from '../hooks/useCheckin';
+import { useAttendanceHistory } from '../hooks/useAttendanceHistory';
 import { StatusCard } from '../components/StatusCard';
 import { CheckinButton } from '../components/CheckinButton';
 
@@ -13,10 +14,51 @@ type Props = NativeStackScreenProps<MainStackParamList, 'Checkin'>;
 
 export const CheckinScreen = ({ navigation }: Props) => {
   const { handleCheckin, loading } = useCheckin();
+  const { logs, onRefresh } = useAttendanceHistory();
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
 
   const initialLetter = typeof user === 'string' && user ? user.charAt(0).toUpperCase() : 'E';
+
+  // Fetch history on component mount
+  useEffect(() => {
+    onRefresh();
+  }, []);
+
+  // Filter logs recorded today
+  const todayStr = new Date().toDateString();
+  const logsList = Array.isArray(logs) ? logs : [];
+
+  const todayLogs = logsList.filter((log) => {
+    if (!log?.time) return false;
+    return new Date(log.time).toDateString() === todayStr;
+  });
+
+  // Earliest 'IN' check-in today
+  const firstEntryLog = todayLogs
+    .filter((log) => log.logType === 'IN')
+    .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())[0];
+
+  // Latest 'OUT' check-out today
+  const lastExitLog = todayLogs
+    .filter((log) => log.logType === 'OUT')
+    .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())[0];
+
+  // Format time string to HH:MM format
+  const formatTime = (timeValue?: string) => {
+    if (!timeValue) return '-- : --';
+    const date = new Date(timeValue);
+    if (isNaN(date.getTime())) return '-- : --';
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
+  const firstEntry = formatTime(firstEntryLog?.time);
+  const lastExit = formatTime(lastExitLog?.time);
+
+  const onCheckinPress = async (type: 'IN' | 'OUT') => {
+    await handleCheckin(type);
+    await onRefresh(); // Refresh today's summary immediately after checking in/out
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-slate-50">
@@ -58,9 +100,9 @@ export const CheckinScreen = ({ navigation }: Props) => {
 
         {/* Action Buttons Row */}
         <View className="flex-row space-x-4 mb-6">
-          <CheckinButton type="IN" onPress={() => handleCheckin('IN')} loading={loading} />
+          <CheckinButton type="IN" onPress={() => onCheckinPress('IN')} loading={loading} />
           <View className="w-3" />
-          <CheckinButton type="OUT" onPress={() => handleCheckin('OUT')} loading={loading} />
+          <CheckinButton type="OUT" onPress={() => onCheckinPress('OUT')} loading={loading} />
         </View>
 
         {/* Today's Activity Summary Card */}
@@ -74,7 +116,7 @@ export const CheckinScreen = ({ navigation }: Props) => {
               <View className="w-2.5 h-2.5 rounded-full bg-emerald-500 mr-3" />
               <Text className="text-slate-600 font-medium text-sm">First Entry</Text>
             </View>
-            <Text className="text-slate-900 font-bold text-sm">-- : --</Text>
+            <Text className="text-slate-900 font-bold text-sm">{firstEntry}</Text>
           </View>
 
           <View className="flex-row justify-between items-center pt-3">
@@ -82,7 +124,7 @@ export const CheckinScreen = ({ navigation }: Props) => {
               <View className="w-2.5 h-2.5 rounded-full bg-rose-500 mr-3" />
               <Text className="text-slate-600 font-medium text-sm">Last Exit</Text>
             </View>
-            <Text className="text-slate-900 font-bold text-sm">-- : --</Text>
+            <Text className="text-slate-900 font-bold text-sm">{lastExit}</Text>
           </View>
         </View>
 
