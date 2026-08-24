@@ -1,0 +1,43 @@
+
+import React from 'react';
+import { TouchableOpacity, Text, View, ActivityIndicator } from 'react-native';
+
+interface CheckinButtonProps {
+  type: 'IN' | 'OUT';
+  onPress: () => void;
+  loading: boolean;
+}
+
+export const CheckinButton = ({ type, onPress, loading }: CheckinButtonProps) => {
+  const isIn = type === 'IN';
+
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      disabled={loading}
+      activeOpacity={0.8}
+      className={`flex-1 p-5 rounded-2xl border ${
+        isIn
+          ? 'bg-emerald-600 border-emerald-500 shadow-lg shadow-emerald-200'
+          : 'bg-rose-600 border-rose-500 shadow-lg shadow-rose-200'
+      }`}
+    >
+      <View className="flex-row justify-between items-center mb-3">
+        <View className="w-8 h-8 rounded-full bg-white/20 items-center justify-center">
+          <Text className="text-white font-bold text-sm">{isIn ? '↓' : '↑'}</Text>
+        </View>
+        <Text className="text-white/70 text-xs font-bold tracking-widest uppercase">
+          {isIn ? 'Start Duty' : 'End Duty'}
+        </Text>
+      </View>
+
+      {loading ? (
+        <ActivityIndicator color="#ffffff" className="my-1" />
+      ) : (
+        <Text className="text-white text-2xl font-black tracking-wide">
+          {isIn ? 'Check IN' : 'Check OUT'}
+        </Text>
+      )}
+    </TouchableOpacity>
+  );
+};

@@ -1,5 +1,8 @@
 {
   "plugins": [
     "expo-secure-store"
-  ]
+  ],
+  "android": {
+    "package": "com.anonymous.erpnextattendanceapp"
+  }
 }

@@ -4,19 +4,19 @@
   "main": "index.js",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "ts-check": "tsc --noEmit",
     "lint": "eslint src --ext .ts,.tsx"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^3.1.1",
+    "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.11.0",
     "axios": "^1.19.0",
-    "expo": "~54.0.8",
+    "expo": "~54.0.37",
     "expo-local-authentication": "~17.0.9",
     "expo-location": "~19.0.8",
     "expo-secure-store": "~15.0.8",
@@ -27,6 +27,7 @@
     "react-native": "0.81.5",
     "react-native-css-interop": "^0.2.6",
     "react-native-mmkv": "^2.12.2",
+    "react-native-reanimated": "~4.1.7",
     "react-native-safe-area-context": "~5.6.2",
     "react-native-screens": "~4.16.0",
     "tailwindcss": "^3.4.3",
@@ -34,8 +35,10 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@react-native/debugger-frontend": "^0.87.0",
     "@types/react": "~19.1.17",
     "eslint": "^8.57.0",
+    "react-native-worklets": "^0.5.1",
     "typescript": "^5.1.3"
   },
   "private": true
