@@ -10,7 +10,7 @@ import { useAttendanceHistory, UnifiedCheckinItem } from '../hooks/useAttendance
 type Props = NativeStackScreenProps<MainStackParamList, 'History'>;
 
 export const HistoryScreen = ({ navigation }: Props) => {
-  const { history, isLoading, error, refresh } = useAttendanceHistory();
+  const { logs, loading, refreshing, errorMessage, onRefresh } = useAttendanceHistory();
   const user = useAuthStore((state) => state.user);
 
   const formatDate = (dateString: string) => {
@@ -48,15 +48,9 @@ export const HistoryScreen = ({ navigation }: Props) => {
         </View>
 
         <View className="items-end">
-          {item.isPendingSync ? (
-            <View className="rounded-full bg-amber-50 px-2.5 py-1 border border-amber-200">
-              <Text className="text-xs font-medium text-amber-700">Pending Sync</Text>
-            </View>
-          ) : (
-            <View className="rounded-full bg-slate-100 px-2.5 py-1">
-              <Text className="text-xs font-medium text-slate-600">Synced</Text>
-            </View>
-          )}
+          <View className="rounded-full bg-slate-100 px-2.5 py-1">
+            <Text className="text-xs font-medium text-slate-600">Synced</Text>
+          </View>
         </View>
       </View>
     );
@@ -69,22 +63,22 @@ export const HistoryScreen = ({ navigation }: Props) => {
         <Text className="text-xs text-slate-500">Log history for {user || 'Employee'}</Text>
       </View>
 
-      {error && (
+      {errorMessage !== '' && (
         <View className="m-4 rounded-lg bg-red-50 p-3 border border-red-200">
-          <Text className="text-sm text-red-700">{error}</Text>
+          <Text className="text-sm text-red-700">{errorMessage}</Text>
         </View>
       )}
 
       <FlatList
-        data={history}
+        data={logs}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         contentContainerStyle={{ padding: 16, flexGrow: 1 }}
         refreshControl={
-          <RefreshControl refreshing={isLoading} onRefresh={refresh} colors={['#0284c7']} />
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#0284c7']} />
         }
         ListEmptyComponent={
-          isLoading ? (
+          loading ? (
             <View className="flex-1 items-center justify-center py-20">
               <ActivityIndicator size="large" color="#0284c7" />
             </View>
