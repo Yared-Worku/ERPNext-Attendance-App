@@ -18,7 +18,7 @@ importers:
         specifier: ^6.11.0
         version: 6.11.0(aa2a28e9f27b26aa48ed1eb5de6545da)
       axios:
-        specifier: ^1.6.8
+        specifier: ^1.19.0
         version: 1.19.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
       expo:
         specifier: ~54.0.8
