@@ -1,20 +1,14 @@
-// src/features/auth/api/authApi.ts
 import { apiClient, setBaseUrl } from '../../../services/api/client';
+import { ENV } from '../../../config/env';
 
-export interface LoginParams {
+export interface LoginPayload {
   baseUrl: string;
   usr: string;
   pwd: string;
 }
 
-export const loginToFrappe = async ({ baseUrl, usr, pwd }: LoginParams) => {
+export const loginApi = async ({ baseUrl, usr, pwd }: LoginPayload) => {
   setBaseUrl(baseUrl);
-
-  const response = await apiClient.post('/api/method/login', {
-    usr,
-    pwd,
-  });
-
-  // Frappe returns { message: "Logged In", home_page: "..." } on success
+  const response = await apiClient.post(ENV.ENDPOINTS.LOGIN, { usr, pwd });
   return response.data;
 };
