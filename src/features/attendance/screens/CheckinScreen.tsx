@@ -1,18 +1,22 @@
-
+// src/features/attendance/screens/CheckinScreen.tsx
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MainStackParamList } from '../../../navigation/types';
 import { useAuthStore } from '../../../store';
 import { useCheckin } from '../hooks/useCheckin';
 import { StatusCard } from '../components/StatusCard';
 import { CheckinButton } from '../components/CheckinButton';
 
-export const CheckinScreen = () => {
+type Props = NativeStackScreenProps<MainStackParamList, 'Checkin'>;
+
+export const CheckinScreen = ({ navigation }: Props) => {
   const { handleCheckin, loading } = useCheckin();
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
 
-  const initialLetter = user ? user.charAt(0).toUpperCase() : 'E';
+  const initialLetter = typeof user === 'string' && user ? user.charAt(0).toUpperCase() : 'E';
 
   return (
     <SafeAreaView className="flex-1 bg-slate-50">
@@ -28,16 +32,25 @@ export const CheckinScreen = () => {
               <Text className="text-slate-400 text-xs font-semibold uppercase tracking-wider">
                 Employee
               </Text>
-              <Text className="text-slate-900 font-bold text-base">{user}</Text>
+              <Text className="text-slate-900 font-bold text-base">{user || 'Employee'}</Text>
             </View>
           </View>
 
-          <TouchableOpacity
-            onPress={logout}
-            className="bg-slate-200/60 px-3.5 py-2 rounded-xl active:bg-slate-300"
-          >
-            <Text className="text-slate-700 font-semibold text-xs">Logout</Text>
-          </TouchableOpacity>
+          <View className="flex-row space-x-2">
+            <TouchableOpacity
+              onPress={() => navigation.navigate('History')}
+              className="bg-sky-100 px-3.5 py-2 rounded-xl active:bg-sky-200"
+            >
+              <Text className="text-sky-700 font-semibold text-xs">History</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={logout}
+              className="bg-slate-200/60 px-3.5 py-2 rounded-xl active:bg-slate-300"
+            >
+              <Text className="text-slate-700 font-semibold text-xs">Logout</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         {/* Live Clock & Status Card */}
