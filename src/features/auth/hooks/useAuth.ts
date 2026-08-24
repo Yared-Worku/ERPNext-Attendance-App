@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Alert } from 'react-native';
 import { useAuthStore } from '../../../store';
@@ -16,9 +17,12 @@ export const useAuth = () => {
     setLoading(true);
     try {
       await loginApi(payload);
-      loginStore(payload.usr);
+      loginStore(payload.baseUrl, payload.usr);
     } catch (error: any) {
-      const message = error.response?.data?.message || 'Authentication failed. Check your server URL and credentials.';
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        'Authentication failed. Check your server URL and credentials.';
       Alert.alert('Login Error', message);
     } finally {
       setLoading(false);
