@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { Alert } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import { getCurrentLocation } from '../../../services/device/location';
+import { authenticateWithBiometrics } from '../../../services/device/biometrics';
 import { postEmployeeCheckin } from '../api/attendanceApi';
 import { useAuthStore } from '../../../store';
 
@@ -69,22 +70,31 @@ export const useCheckin = () => {
     return () => unsubscribe();
   }, [syncQueue]);
 
-  // 3. Stable memoized handleCheckin function
+  // 3. Stable memoized handleCheckin function with Biometric verification
   const handleCheckin = useCallback(async (logType: 'IN' | 'OUT') => {
+    const userEmail =
+      typeof user === 'string'
+        ? user
+        : (user as any)?.email || (user as any)?.name || (user as any)?.user || '';
+
+    if (!userEmail) {
+      Alert.alert('Auth Error', 'No logged in user email found in state.');
+      return;
+    }
+
+    // Step 1: Biometric Verification Guard
+    const isVerified = await authenticateWithBiometrics(
+      `Verify identity to Check ${logType === 'IN' ? 'IN' : 'OUT'}`
+    );
+
+    if (!isVerified) {
+      return; // Stop execution if biometric check fails or is canceled
+    }
+
+    // Step 2: Proceed with Location & Attendance Logging
     setLoading(true);
 
     try {
-      const userEmail =
-        typeof user === 'string'
-          ? user
-          : (user as any)?.email || (user as any)?.name || (user as any)?.user || '';
-
-      if (!userEmail) {
-        Alert.alert('Auth Error', 'No logged in user email found in state.');
-        setLoading(false);
-        return;
-      }
-
       const location = await getCurrentLocation();
 
       if (!location) {
