@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Alert } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import { getCurrentLocation } from '../../../services/device/location';
@@ -15,29 +15,29 @@ export interface QueueItem {
   attempts: number;
 }
 
+const EMPTY_QUEUE: QueueItem[] = [];
+
 export const useCheckin = () => {
   const [loading, setLoading] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
-
-  // Sync execution lock ref to break the render loop
   const isSyncingRef = useRef(false);
 
+  // Extract primitive state and actions with stable selectors
   const user = useAuthStore((state: any) => state.user);
-  const queue: QueueItem[] = useAuthStore((state: any) => state.queue || []);
+  const rawQueue = useAuthStore((state: any) => state.queue);
+  const queue = rawQueue || EMPTY_QUEUE;
   const addToQueue = useAuthStore((state: any) => state.addToQueue);
-  const removeFromQueue = useAuthStore((state: any) => state.removeFromQueue);
-  const incrementAttempts = useAuthStore((state: any) => state.incrementAttempts);
 
-  // Sequential queue flusher (FIFO)
+  // 1. Stable memoized syncQueue function
   const syncQueue = useCallback(async () => {
-    const currentQueue: QueueItem[] = useAuthStore.getState().queue || [];
+    const { queue: currentQueue = [], removeFromQueue, incrementAttempts } = useAuthStore.getState();
     if (currentQueue.length === 0 || isSyncingRef.current) return;
 
     isSyncingRef.current = true;
     setIsSyncing(true);
 
     for (const item of currentQueue) {
-      if (item.attempts >= 5) continue; // Skip items exceeding maximum retries
+      if (item.attempts >= 5) continue;
 
       try {
         await postEmployeeCheckin({
@@ -50,15 +50,15 @@ export const useCheckin = () => {
         removeFromQueue(item.id);
       } catch (error) {
         incrementAttempts(item.id);
-        break; // Pause loop on failure to preserve exact check-in sequence
+        break; // Pause queue on failure to preserve exact check-in order
       }
     }
 
     isSyncingRef.current = false;
     setIsSyncing(false);
-  }, [removeFromQueue, incrementAttempts]);
+  }, []);
 
-  // Auto-trigger sync on network reconnect
+  // 2. Mount-only network listener
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
       if (state.isConnected && state.isInternetReachable !== false) {
@@ -69,7 +69,8 @@ export const useCheckin = () => {
     return () => unsubscribe();
   }, [syncQueue]);
 
-  const handleCheckin = async (logType: 'IN' | 'OUT') => {
+  // 3. Stable memoized handleCheckin function
+  const handleCheckin = useCallback(async (logType: 'IN' | 'OUT') => {
     setLoading(true);
 
     try {
@@ -105,10 +106,8 @@ export const useCheckin = () => {
         attempts: 0,
       };
 
-      // Handle direct offline state
       if (!isOnline) {
         addToQueue(newItem);
-
         Alert.alert(
           'Offline Mode',
           'No internet connection. Your check-in is saved locally and will sync automatically when reconnected.'
@@ -116,7 +115,6 @@ export const useCheckin = () => {
         return;
       }
 
-      // Try online submission
       try {
         await postEmployeeCheckin({
           userEmail,
@@ -129,9 +127,7 @@ export const useCheckin = () => {
         Alert.alert('Success', `Successfully checked ${logType === 'IN' ? 'IN' : 'OUT'}!`);
       } catch (error: any) {
         console.warn('[Checkin] Online submit failed, queuing offline log:', error?.message);
-
         addToQueue(newItem);
-
         Alert.alert(
           'Saved Offline',
           'Unable to reach server. Check-in saved locally and queued for auto-sync.'
@@ -143,7 +139,7 @@ export const useCheckin = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, addToQueue]);
 
   return {
     handleCheckin,
