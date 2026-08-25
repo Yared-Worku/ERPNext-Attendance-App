@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, ScrollView } from 'react-native';
+import { useTranslation } from 'react-i18next'; // 1. Imported translation hook
 import { useCheckin } from '../hooks/useCheckin';
 import { useAttendanceHistory } from '../hooks/useAttendanceHistory';
 import { StatusCard } from './StatusCard';
@@ -7,6 +8,7 @@ import { CheckinButton } from './CheckinButton';
 import { OfflineBanner } from './OfflineBanner';
 
 export const CheckinPanel = () => {
+  const { t } = useTranslation(); // 2. Initialized the hook
   const { handleCheckin, loading, pendingCount, syncQueue, isSyncing } = useCheckin();
   const { logs, onRefresh } = useAttendanceHistory();
 
@@ -60,13 +62,15 @@ export const CheckinPanel = () => {
 
       <View className="bg-white dark:bg-slate-800 rounded-3xl p-5 border border-slate-100 dark:border-slate-700 shadow-sm">
         <Text className="text-slate-900 dark:text-white font-bold text-base mb-4">
-          Today's Log Summary
+          {t('attendance.todaySummary', "Today's Log Summary")} {/* 3. Applied translation */}
         </Text>
 
         <View className="flex-row justify-between items-center py-3 border-b border-slate-100 dark:border-slate-700">
           <View className="flex-row items-center">
             <View className="w-2.5 h-2.5 rounded-full bg-emerald-500 mr-3" />
-            <Text className="text-slate-600 dark:text-slate-300 font-medium text-sm">First Entry</Text>
+            <Text className="text-slate-600 dark:text-slate-300 font-medium text-sm">
+              {t('attendance.firstEntry', 'First Entry')} {/* 3. Applied translation */}
+            </Text>
           </View>
           <Text className="text-slate-900 dark:text-white font-bold text-sm">{formatTime(firstEntryLog?.time)}</Text>
         </View>
@@ -74,7 +78,9 @@ export const CheckinPanel = () => {
         <View className="flex-row justify-between items-center pt-3">
           <View className="flex-row items-center">
             <View className="w-2.5 h-2.5 rounded-full bg-rose-500 mr-3" />
-            <Text className="text-slate-600 dark:text-slate-300 font-medium text-sm">Last Exit</Text>
+            <Text className="text-slate-600 dark:text-slate-300 font-medium text-sm">
+              {t('attendance.lastExit', 'Last Exit')} {/* 3. Applied translation */}
+            </Text>
           </View>
           <Text className="text-slate-900 dark:text-white font-bold text-sm">{formatTime(lastExitLog?.time)}</Text>
         </View>

@@ -15,7 +15,22 @@
     "checkOutSuccess": "Successfully checked OUT!",
     "savedOffline": "Check-in saved locally and queued for auto-sync.",
     "pendingSync": "Pending Sync",
-    "locationError": "Unable to retrieve GPS coordinates."
+    "locationError": "Unable to retrieve GPS coordinates.",
+    "totalLogs": "Total Logs",
+"pending": "Pending",
+"synced": "Synced",
+"noLogs": "No Attendance Logs Found",
+"noLogsDesc": "Your checked-in and checked-out activity logs will be listed here.",
+"todaySummary": "Today's Log Summary",
+"firstEntry": "First Entry",
+"lastExit": "Last Exit",
+"shiftStatus": "Shift Status",
+"gpsReady": "GPS Ready",
+"startDuty": "Start Duty",
+"endDuty": "End Duty",
+"pendingCheckins": "Pending Check-in(s)",
+"offlineDesc": "Saved locally. Will auto-sync when internet reconnects.",
+"syncNow": "Sync Now"
   },
   "header": {
     "openProfileMenu": "Open profile menu",

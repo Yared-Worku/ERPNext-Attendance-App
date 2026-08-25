@@ -15,7 +15,22 @@
     "checkOutSuccess": "በተሳካ ሁኔታ ወጥተዋል!",
     "savedOffline": "መረጃው በስልክዎ ላይ ተቀምጧል። ኢንተርኔት ሲያገኙ በራሱ ይላካል።",
     "pendingSync": "ያልተላኩ መረጃዎች",
-    "locationError": "የካርታ የቦታ መረጃ ማግኘት አልተቻለም።"
+    "locationError": "የካርታ የቦታ መረጃ ማግኘት አልተቻለም።",
+    "totalLogs": "አጠቃላይ መዝገቦች",
+"pending": "በመጠባበቅ ላይ",
+"synced": "የተላከ",
+"noLogs": "ምንም የመገኘት መዝገብ አልተገኘም",
+"noLogsDesc": "እዚህ ጋር የገቡበት እና የወጡበት መዝገብ ይቀመጣል።",
+"todaySummary": "የዛሬ መዝገብ ማጠቃለያ",
+"firstEntry": "የመጀመሪያ መግቢያ",
+"lastExit": "የመጨረሻ መውጫ",
+"shiftStatus": "የስራ ሰዓት ሁኔታ",
+"gpsReady": "ጂፒኤስ ዝግጁ ነው",
+"startDuty": "ስራ መጀመሪያ",
+"endDuty": "ስራ መጨረሻ",
+"pendingCheckins": "ያልተላኩ መዝገቦች",
+"offlineDesc": "በስልክዎ ላይ ተቀምጧል። ኢንተርኔት ሲያገኙ በራሱ ይላካል።",
+"syncNow": "አሁን ላክ"
   },
   "header": {
     "openProfileMenu": "የመገለጫ ምናሌን ክፈት",

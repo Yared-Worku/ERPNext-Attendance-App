@@ -1,5 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, View, ActivityIndicator } from 'react-native';
+import { useTranslation } from 'react-i18next'; // 1. Imported translation hook
 
 interface CheckinButtonProps {
   type: 'IN' | 'OUT';
@@ -8,6 +9,7 @@ interface CheckinButtonProps {
 }
 
 export const CheckinButton = ({ type, onPress, loading }: CheckinButtonProps) => {
+  const { t } = useTranslation(); // 2. Initialized the hook
   const isIn = type === 'IN';
 
   return (
@@ -26,7 +28,8 @@ export const CheckinButton = ({ type, onPress, loading }: CheckinButtonProps) =>
           <Text className="text-white font-bold text-sm">{isIn ? '↓' : '↑'}</Text>
         </View>
         <Text className="text-white/70 text-xs font-bold tracking-widest uppercase">
-          {isIn ? 'Start Duty' : 'End Duty'}
+          {/* 3. Applied translations for Start/End Duty */}
+          {isIn ? t('attendance.startDuty', 'Start Duty') : t('attendance.endDuty', 'End Duty')}
         </Text>
       </View>
 
@@ -34,7 +37,8 @@ export const CheckinButton = ({ type, onPress, loading }: CheckinButtonProps) =>
         <ActivityIndicator color="#ffffff" className="my-1" />
       ) : (
         <Text className="text-white text-2xl font-black tracking-wide">
-          {isIn ? 'Check IN' : 'Check OUT'}
+          {/* 4. Used your existing common.checkIn / checkOut keys! */}
+          {isIn ? t('common.checkIn', 'Check IN') : t('common.checkOut', 'Check OUT')}
         </Text>
       )}
     </TouchableOpacity>
