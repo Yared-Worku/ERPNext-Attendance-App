@@ -1,0 +1,17 @@
+{
+  "common": {
+    "checkIn": "መግቢያ (Check In)",
+    "checkOut": "መውጫ (Check Out)",
+    "offlineMode": "ኦፍላይን ሁነታ",
+    "success": "ተሳክቷል",
+    "error": "ስህተት",
+    "loading": "በመጫን ላይ..."
+  },
+  "attendance": {
+    "checkInSuccess": "በተሳካ ሁኔታ ገብተዋል!",
+    "checkOutSuccess": "በተሳካ ሁኔታ ወጥተዋል!",
+    "savedOffline": "መረጃው በስልክዎ ላይ ተቀምጧል። ኢንተርኔት ሲያገኙ በራሱ ይላካል።",
+    "pendingSync": "ያልተላኩ መረጃዎች",
+    "locationError": "የካርታ የቦታ መረጃ ማግኘት አልተቻለም።"
+  }
+}

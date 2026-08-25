@@ -1,4 +1,3 @@
-
 import * as Location from 'expo-location';
 import { Alert } from 'react-native';
 
@@ -24,6 +23,7 @@ export const getCurrentLocation = async (): Promise<LocationData | null> => {
   if (!hasPermission) return null;
 
   try {
+    // Attempt high-accuracy GPS capture
     const location = await Location.getCurrentPositionAsync({
       accuracy: Location.Accuracy.High,
     });
@@ -33,7 +33,21 @@ export const getCurrentLocation = async (): Promise<LocationData | null> => {
       longitude: location.coords.longitude,
     };
   } catch (error) {
-    Alert.alert('Location Error', 'Unable to retrieve current GPS position.');
-    return null;
+    console.warn('[LocationService] High accuracy position timed out. Trying balanced accuracy...');
+    
+    // Fallback to cell/WiFi triangulation if GPS fails indoors
+    try {
+      const fallbackLocation = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Balanced,
+      });
+
+      return {
+        latitude: fallbackLocation.coords.latitude,
+        longitude: fallbackLocation.coords.longitude,
+      };
+    } catch (fallbackError) {
+      Alert.alert('Location Error', 'Unable to retrieve current GPS position. Please check location settings.');
+      return null;
+    }
   }
 };

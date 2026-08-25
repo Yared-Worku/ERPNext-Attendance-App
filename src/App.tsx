@@ -1,7 +1,11 @@
 
+import '../src/locales/i18n';
+import '../global.css';
+
 import React, { useEffect } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { LanguageSwitcher } from './shared/components/LanguageSwitcher';
 import { RootNavigator } from './navigation/RootNavigator';
 import { useAuthStore } from './store';
 import { getSavedSession } from './services/storage/sessionStorage';
@@ -38,6 +42,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
+      <LanguageSwitcher />
       <RootNavigator />
     </NavigationContainer>
   );

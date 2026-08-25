@@ -1,0 +1,17 @@
+{
+  "common": {
+    "checkIn": "Check In",
+    "checkOut": "Check Out",
+    "offlineMode": "Offline Mode",
+    "success": "Success",
+    "error": "Error",
+    "loading": "Loading..."
+  },
+  "attendance": {
+    "checkInSuccess": "Successfully checked IN!",
+    "checkOutSuccess": "Successfully checked OUT!",
+    "savedOffline": "Check-in saved locally and queued for auto-sync.",
+    "pendingSync": "Pending Sync",
+    "locationError": "Unable to retrieve GPS coordinates."
+  }
+}
