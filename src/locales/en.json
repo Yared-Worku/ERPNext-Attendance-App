@@ -5,7 +5,10 @@
     "offlineMode": "Offline Mode",
     "success": "Success",
     "error": "Error",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "attendance": "Attendance",
+    "employee": "Employee",
+    "back": "Go back"
   },
   "attendance": {
     "checkInSuccess": "Successfully checked IN!",
@@ -13,5 +16,12 @@
     "savedOffline": "Check-in saved locally and queued for auto-sync.",
     "pendingSync": "Pending Sync",
     "locationError": "Unable to retrieve GPS coordinates."
+  },
+  "header": {
+    "openProfileMenu": "Open profile menu",
+    "signedInAs": "SIGNED IN AS",
+    "language": "Language",
+    "history": "Attendance History",
+    "signOut": "Sign Out"
   }
 }

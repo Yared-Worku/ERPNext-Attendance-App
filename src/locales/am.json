@@ -5,7 +5,10 @@
     "offlineMode": "ኦፍላይን ሁነታ",
     "success": "ተሳክቷል",
     "error": "ስህተት",
-    "loading": "በመጫን ላይ..."
+    "loading": "በመጫን ላይ...",
+    "attendance": "መገኘት",
+    "employee": "ሠራተኛ",
+    "back": "ወደ ኋላ ተመለስ"
   },
   "attendance": {
     "checkInSuccess": "በተሳካ ሁኔታ ገብተዋል!",
@@ -13,5 +16,12 @@
     "savedOffline": "መረጃው በስልክዎ ላይ ተቀምጧል። ኢንተርኔት ሲያገኙ በራሱ ይላካል።",
     "pendingSync": "ያልተላኩ መረጃዎች",
     "locationError": "የካርታ የቦታ መረጃ ማግኘት አልተቻለም።"
+  },
+  "header": {
+    "openProfileMenu": "የመገለጫ ምናሌን ክፈት",
+    "signedInAs": "በዚህ ገብተዋል",
+    "language": "ቋንቋ",
+    "history": "የመገኘት ታሪክ",
+    "signOut": "ውጣ"
   }
 }
