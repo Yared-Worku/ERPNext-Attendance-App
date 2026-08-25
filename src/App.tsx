@@ -7,11 +7,13 @@ import { useAuthStore } from './store';
 import { getSavedSession } from './services/storage/sessionStorage';
 import { setBaseUrl } from './services/api/client';
 import '../global.css';
+import { useOfflineSync } from '../src/features/attendance/hooks/useOfflineSync';
 
 export default function App() {
   const restoreSession = useAuthStore((state) => state.restoreSession);
   const finishSessionCheck = useAuthStore((state) => state.finishSessionCheck);
   const isLoadingSession = useAuthStore((state) => state.isLoadingSession);
+  useOfflineSync();
 
   useEffect(() => {
     const checkSession = async () => {
