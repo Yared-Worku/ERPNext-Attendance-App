@@ -1,9 +1,8 @@
-import './locales/i18n';
 
+import '../src/locales/i18n';
 import React, { useEffect } from 'react';
-import { View, ActivityIndicator, SafeAreaView, StatusBar, Platform } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { LanguageSwitcher } from './shared/components/LanguageSwitcher';
 import { RootNavigator } from './navigation/RootNavigator';
 import { useAuthStore } from './store';
 import { getSavedSession } from './services/storage/sessionStorage';
@@ -37,23 +36,8 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-        backgroundColor: '#ffffff',
-      }}
-    >
-      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-      
-      {/* Top action bar positioned safely under status icons */}
-      <View className="flex-row justify-end px-4 py-1 bg-white border-b border-gray-100">
-        <LanguageSwitcher />
-      </View>
-
-      <NavigationContainer>
-        <RootNavigator />
-      </NavigationContainer>
-    </SafeAreaView>
+    <NavigationContainer>
+      <RootNavigator />
+    </NavigationContainer>
   );
 }
