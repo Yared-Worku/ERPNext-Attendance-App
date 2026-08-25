@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Alert } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import { getCurrentLocation } from '../../../services/device/location';
@@ -19,6 +19,9 @@ export const useCheckin = () => {
   const [loading, setLoading] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
 
+  // Sync execution lock ref to break the render loop
+  const isSyncingRef = useRef(false);
+
   const user = useAuthStore((state: any) => state.user);
   const queue: QueueItem[] = useAuthStore((state: any) => state.queue || []);
   const addToQueue = useAuthStore((state: any) => state.addToQueue);
@@ -28,8 +31,9 @@ export const useCheckin = () => {
   // Sequential queue flusher (FIFO)
   const syncQueue = useCallback(async () => {
     const currentQueue: QueueItem[] = useAuthStore.getState().queue || [];
-    if (currentQueue.length === 0 || isSyncing) return;
+    if (currentQueue.length === 0 || isSyncingRef.current) return;
 
+    isSyncingRef.current = true;
     setIsSyncing(true);
 
     for (const item of currentQueue) {
@@ -50,8 +54,9 @@ export const useCheckin = () => {
       }
     }
 
+    isSyncingRef.current = false;
     setIsSyncing(false);
-  }, [isSyncing, removeFromQueue, incrementAttempts]);
+  }, [removeFromQueue, incrementAttempts]);
 
   // Auto-trigger sync on network reconnect
   useEffect(() => {
