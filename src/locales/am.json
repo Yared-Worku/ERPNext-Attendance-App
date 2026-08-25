@@ -38,5 +38,13 @@
     "language": "ቋንቋ",
     "history": "የመገኘት ታሪክ",
     "signOut": "ውጣ"
-  }
+  },
+  "auth": {
+  "siteUrl": "የፍራፔ ድረ-ገጽ አድራሻ",
+  "username": "የተጠቃሚ ስም / ኢሜይል",
+  "password": "የይለፍ ቃል",
+  "signIn": "ግባ",
+  "welcomeBack": "እንኳን ደህና መጡ",
+"signInSubtitle": "ወደ ኢአርፒኔክስት (ERPNext) መገኘት ይግቡ"
+}
 }

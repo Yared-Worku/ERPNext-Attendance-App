@@ -38,5 +38,13 @@
     "language": "Language",
     "history": "Attendance History",
     "signOut": "Sign Out"
-  }
+  },
+  "auth": {
+  "siteUrl": "Frappe Site URL",
+  "username": "Username / Email",
+  "password": "Password",
+  "signIn": "Sign In",
+  "welcomeBack": "Welcome Back",
+"signInSubtitle": "Sign in to ERPNext Attendance"
+}
 }

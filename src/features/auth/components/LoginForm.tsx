@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { useTranslation } from 'react-i18next'; // 1. Imported translation hook
 import { useAuth } from '../hooks/useAuth';
 
 export const LoginForm = () => {
+  const { t } = useTranslation(); // 2. Initialized the hook
   const [baseUrl, setBaseUrl] = useState('');
   const [usr, setUsr] = useState('');
   const [pwd, setPwd] = useState('');
@@ -16,7 +18,8 @@ export const LoginForm = () => {
     <View className="space-y-4">
       <View>
         <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 ml-1">
-          Frappe Site URL
+          {/* 3. Applied translation for Site URL */}
+          {t('auth.siteUrl', 'Frappe Site URL')}
         </Text>
         <TextInput
           className="w-full bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl px-4 py-3 text-gray-900 dark:text-white"
@@ -31,7 +34,8 @@ export const LoginForm = () => {
 
       <View>
         <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 ml-1">
-          Username / Email
+          {/* 3. Applied translation for Username/Email */}
+          {t('auth.username', 'Username / Email')}
         </Text>
         <TextInput
           className="w-full bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl px-4 py-3 text-gray-900 dark:text-white"
@@ -45,7 +49,8 @@ export const LoginForm = () => {
 
       <View>
         <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 ml-1">
-          Password
+          {/* 3. Applied translation for Password */}
+          {t('auth.password', 'Password')}
         </Text>
         <TextInput
           className="w-full bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl px-4 py-3 text-gray-900 dark:text-white"
@@ -65,7 +70,10 @@ export const LoginForm = () => {
         {loading ? (
           <ActivityIndicator color="#ffffff" />
         ) : (
-          <Text className="text-white font-bold text-lg">Sign In</Text>
+          <Text className="text-white font-bold text-lg">
+            {/* 3. Applied translation for Sign In button */}
+            {t('auth.signIn', 'Sign In')}
+          </Text>
         )}
       </TouchableOpacity>
     </View>
