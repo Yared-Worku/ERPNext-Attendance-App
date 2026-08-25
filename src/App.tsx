@@ -3,6 +3,7 @@ import React, { useEffect, useMemo } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { DefaultTheme, DarkTheme, NavigationContainer } from '@react-navigation/native';
 import { useColorScheme } from 'nativewind'; // IMPORT FROM NATIVEWIND
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Added this import
 import { RootNavigator } from './navigation/RootNavigator';
 import { useAuthStore } from './store';
 import { getSavedSession } from './services/storage/sessionStorage';
@@ -15,8 +16,8 @@ export default function App() {
   const finishSessionCheck = useAuthStore((state) => state.finishSessionCheck);
   const isLoadingSession = useAuthStore((state) => state.isLoadingSession);
 
-  // 1. Listen to NativeWind's manual override instead of React Native's system theme
-  const { colorScheme } = useColorScheme();
+  // 1. Destructure setColorScheme to apply the saved theme on load
+  const { colorScheme, setColorScheme } = useColorScheme();
   const isDarkMode = colorScheme === 'dark';
 
   // 2. Select the correct semantic color palette
@@ -39,6 +40,22 @@ export default function App() {
     };
   }, [isDarkMode, activeColors]);
 
+  // Load Saved Theme
+  useEffect(() => {
+    const loadSavedTheme = async () => {
+      try {
+        const savedTheme = await AsyncStorage.getItem('@app_theme');
+        if (savedTheme === 'light' || savedTheme === 'dark') {
+          setColorScheme(savedTheme);
+        }
+      } catch (error) {
+        console.error('Failed to load theme:', error);
+      }
+    };
+    loadSavedTheme();
+  }, [setColorScheme]);
+
+  // Load Saved Session
   useEffect(() => {
     const checkSession = async () => {
       const session = await getSavedSession();

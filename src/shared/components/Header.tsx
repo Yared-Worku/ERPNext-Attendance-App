@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useColorScheme } from 'nativewind';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Added this import
 import { useAuthStore } from '../../store';
 import { LanguageSwitcher } from './LanguageSwitcher';
 
@@ -32,9 +33,21 @@ export const Header: React.FC<HeaderProps> = ({
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
   
-  // NativeWind Hook for Manual Theme Toggling
-  const { colorScheme, toggleColorScheme } = useColorScheme();
+  // Use setColorScheme instead of toggleColorScheme
+  const { colorScheme, setColorScheme } = useColorScheme();
   const isDarkMode = colorScheme === 'dark';
+
+  // Custom function to toggle AND save to memory
+  const handleToggleTheme = async () => {
+    const newTheme = isDarkMode ? 'light' : 'dark';
+    setColorScheme(newTheme); // Update UI immediately
+    
+    try {
+      await AsyncStorage.setItem('@app_theme', newTheme); // Save preference
+    } catch (error) {
+      console.error('Failed to save theme to storage:', error);
+    }
+  };
 
   const displayTitle = title || t('common.attendance');
 
@@ -74,7 +87,7 @@ export const Header: React.FC<HeaderProps> = ({
         
         {/* Quick Theme Toggle (Outside Menu) */}
         <TouchableOpacity
-          onPress={toggleColorScheme}
+          onPress={handleToggleTheme} // Now triggers our new save function
           activeOpacity={0.7}
           className="w-9 h-9 rounded-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 items-center justify-center mr-3"
         >
