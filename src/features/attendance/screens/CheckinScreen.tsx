@@ -9,11 +9,12 @@ import { useCheckin } from '../hooks/useCheckin';
 import { useAttendanceHistory } from '../hooks/useAttendanceHistory';
 import { StatusCard } from '../components/StatusCard';
 import { CheckinButton } from '../components/CheckinButton';
+import { OfflineBanner } from '../components/OfflineBanner';
 
 type Props = NativeStackScreenProps<MainStackParamList, 'Checkin'>;
 
 export const CheckinScreen = ({ navigation }: Props) => {
-  const { handleCheckin, loading } = useCheckin();
+  const { handleCheckin, loading, pendingCount, syncQueue, isSyncing } = useCheckin();
   const { logs, onRefresh } = useAttendanceHistory();
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
@@ -36,12 +37,12 @@ export const CheckinScreen = ({ navigation }: Props) => {
 
   // Earliest 'IN' check-in today
   const firstEntryLog = todayLogs
-    .filter((log) => log.logType === 'IN')
+    .filter((log) => log.logType === 'IN' || (log as any).log_type === 'IN')
     .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())[0];
 
   // Latest 'OUT' check-out today
   const lastExitLog = todayLogs
-    .filter((log) => log.logType === 'OUT')
+    .filter((log) => log.logType === 'OUT' || (log as any).log_type === 'OUT')
     .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())[0];
 
   // Format time string to HH:MM format
@@ -63,7 +64,7 @@ export const CheckinScreen = ({ navigation }: Props) => {
   return (
     <SafeAreaView className="flex-1 bg-slate-50">
       <ScrollView contentContainerClassName="p-6">
-        
+
         {/* User Header Profile */}
         <View className="flex-row justify-between items-center mb-6">
           <View className="flex-row items-center">
@@ -94,6 +95,13 @@ export const CheckinScreen = ({ navigation }: Props) => {
             </TouchableOpacity>
           </View>
         </View>
+
+        {/* Offline Status & Pending Queue Banner */}
+        <OfflineBanner
+          pendingCount={pendingCount}
+          isSyncing={isSyncing}
+          onSyncPress={syncQueue}
+        />
 
         {/* Live Clock & Status Card */}
         <StatusCard />
