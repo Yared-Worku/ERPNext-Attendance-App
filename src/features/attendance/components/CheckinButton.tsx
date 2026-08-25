@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { TouchableOpacity, Text, View, ActivityIndicator } from 'react-native';
 
@@ -18,8 +17,8 @@ export const CheckinButton = ({ type, onPress, loading }: CheckinButtonProps) =>
       activeOpacity={0.8}
       className={`flex-1 p-5 rounded-2xl border ${
         isIn
-          ? 'bg-emerald-600 border-emerald-500 shadow-lg shadow-emerald-200'
-          : 'bg-rose-600 border-rose-500 shadow-lg shadow-rose-200'
+          ? 'bg-emerald-600 border-emerald-500 shadow-lg shadow-emerald-200 dark:shadow-none dark:border-emerald-700'
+          : 'bg-rose-600 border-rose-500 shadow-lg shadow-rose-200 dark:shadow-none dark:border-rose-700'
       }`}
     >
       <View className="flex-row justify-between items-center mb-3">

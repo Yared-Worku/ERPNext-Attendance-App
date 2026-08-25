@@ -49,13 +49,13 @@ export const CheckinScreen = ({ navigation }: Props) => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-slate-50" edges={['top']}>
-      {/* Shared Reusable Header */}
+    // ADDED: dark:bg-slate-900 to main container
+    <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-900" edges={['top']}>
       <Header
-  title="Attendance"
-  currentScreen="Checkin"
-  onNavigateHistory={() => navigation.navigate('History')}
-   />
+        title="Attendance"
+        currentScreen="Checkin"
+        onNavigateHistory={() => navigation.navigate('History')}
+      />
 
       <ScrollView contentContainerClassName="p-6">
         <OfflineBanner
@@ -72,25 +72,32 @@ export const CheckinScreen = ({ navigation }: Props) => {
           <CheckinButton type="OUT" onPress={() => onCheckinPress('OUT')} loading={loading} />
         </View>
 
-        <View className="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm">
-          <Text className="text-slate-900 font-bold text-base mb-4">
+        {/* ADDED: dark:bg-slate-800 dark:border-slate-700 to the Card */}
+        <View className="bg-white dark:bg-slate-800 rounded-3xl p-5 border border-slate-100 dark:border-slate-700 shadow-sm">
+          {/* ADDED: dark:text-white to Title */}
+          <Text className="text-slate-900 dark:text-white font-bold text-base mb-4">
             Today's Log Summary
           </Text>
 
-          <View className="flex-row justify-between items-center py-3 border-b border-slate-100">
+          {/* ADDED: dark:border-slate-700 to Divider */}
+          <View className="flex-row justify-between items-center py-3 border-b border-slate-100 dark:border-slate-700">
             <View className="flex-row items-center">
               <View className="w-2.5 h-2.5 rounded-full bg-emerald-500 mr-3" />
-              <Text className="text-slate-600 font-medium text-sm">First Entry</Text>
+              {/* ADDED: dark:text-slate-300 to Label */}
+              <Text className="text-slate-600 dark:text-slate-300 font-medium text-sm">First Entry</Text>
             </View>
-            <Text className="text-slate-900 font-bold text-sm">{formatTime(firstEntryLog?.time)}</Text>
+            {/* ADDED: dark:text-white to Value */}
+            <Text className="text-slate-900 dark:text-white font-bold text-sm">{formatTime(firstEntryLog?.time)}</Text>
           </View>
 
           <View className="flex-row justify-between items-center pt-3">
             <View className="flex-row items-center">
               <View className="w-2.5 h-2.5 rounded-full bg-rose-500 mr-3" />
-              <Text className="text-slate-600 font-medium text-sm">Last Exit</Text>
+              {/* ADDED: dark:text-slate-300 to Label */}
+              <Text className="text-slate-600 dark:text-slate-300 font-medium text-sm">Last Exit</Text>
             </View>
-            <Text className="text-slate-900 font-bold text-sm">{formatTime(lastExitLog?.time)}</Text>
+            {/* ADDED: dark:text-white to Value */}
+            <Text className="text-slate-900 dark:text-white font-bold text-sm">{formatTime(lastExitLog?.time)}</Text>
           </View>
         </View>
       </ScrollView>
