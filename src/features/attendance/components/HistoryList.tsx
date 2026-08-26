@@ -13,7 +13,7 @@ export interface AttendanceRecord {
 }
 
 export const HistoryList = () => {
-  const { t } = useTranslation(); // 2. Initialized the hook
+  const { t, i18n } = useTranslation(); // 2. Initialized hook and grabbed i18n
   const { logs, loading, onRefresh } = useAttendanceHistory();
   const { pendingCount } = useCheckin();
 
@@ -60,13 +60,15 @@ export const HistoryList = () => {
     if (isNaN(date.getTime())) return { dateStr: 'Invalid Date', timeStr: '--:--' };
 
     return {
-      dateStr: date.toLocaleDateString(undefined, {
+      // 3. Passed i18n.language so dates translate to Amharic standards
+      dateStr: date.toLocaleDateString(i18n.language, {
         weekday: 'short',
         month: 'short',
         day: 'numeric',
         year: 'numeric',
       }),
-      timeStr: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      // 3. Passed i18n.language so times translate correctly
+      timeStr: date.toLocaleTimeString(i18n.language, { hour: '2-digit', minute: '2-digit' }),
     };
   };
 
@@ -100,14 +102,14 @@ export const HistoryList = () => {
           <View className="bg-amber-50 dark:bg-amber-900/30 px-3 py-1.5 rounded-full border border-amber-200/60 dark:border-amber-800/60 flex-row items-center">
             <View className="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5" />
             <Text className="text-amber-700 dark:text-amber-400 font-semibold text-xs">
-              {t('attendance.pending', 'Pending')} {/* 3. Applied translation */}
+              {t('attendance.pending', 'Pending')}
             </Text>
           </View>
         ) : (
           <View className="bg-emerald-50 dark:bg-emerald-900/30 px-3 py-1.5 rounded-full border border-emerald-200/60 dark:border-emerald-800/60 flex-row items-center">
             <View className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5" />
             <Text className="text-emerald-700 dark:text-emerald-400 font-semibold text-xs">
-              {t('attendance.synced', 'Synced')} {/* 3. Applied translation */}
+              {t('attendance.synced', 'Synced')}
             </Text>
           </View>
         )}
@@ -120,14 +122,14 @@ export const HistoryList = () => {
       <View className="px-6 py-4 flex-row space-x-3">
         <View className="flex-1 bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
           <Text className="text-slate-400 dark:text-slate-500 text-xs font-semibold uppercase tracking-wider mb-1">
-            {t('attendance.totalLogs', 'Total Logs')} {/* 3. Applied translation */}
+            {t('attendance.totalLogs', 'Total Logs')}
           </Text>
           <Text className="text-slate-900 dark:text-white font-extrabold text-xl">{allLogs.length}</Text>
         </View>
 
         <View className="flex-1 bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
           <Text className="text-slate-400 dark:text-slate-500 text-xs font-semibold uppercase tracking-wider mb-1">
-            {t('attendance.pendingSync')} {/* 3. Applied translation */}
+            {t('attendance.pendingSync')}
           </Text>
           <Text className="text-amber-600 dark:text-amber-500 font-extrabold text-xl">
             {pendingCount ?? formattedPendingLogs.length}
@@ -155,10 +157,10 @@ export const HistoryList = () => {
                 <Text className="text-slate-400 dark:text-slate-600 font-bold text-2xl">📋</Text>
               </View>
               <Text className="text-slate-800 dark:text-slate-200 font-bold text-base mb-1">
-                {t('attendance.noLogs', 'No Attendance Logs Found')} {/* 3. Applied translation */}
+                {t('attendance.noLogs', 'No Attendance Logs Found')}
               </Text>
               <Text className="text-slate-400 dark:text-slate-500 text-xs text-center max-w-[220px]">
-                {t('attendance.noLogsDesc', 'Your checked-in and checked-out activity logs will be listed here.')} {/* 3. Applied translation */}
+                {t('attendance.noLogsDesc', 'Your checked-in and checked-out activity logs will be listed here.')}
               </Text>
             </View>
           ) : (
