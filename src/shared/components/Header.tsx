@@ -154,7 +154,7 @@ export const Header: React.FC<HeaderProps> = ({
           <View className="flex-1 bg-slate-950/25 dark:bg-black/50 justify-start items-end pt-16 pr-5">
             <TouchableWithoutFeedback>
               <View
-                className="w-72 bg-white dark:bg-slate-900 rounded-2xl p-2 border border-slate-100 dark:border-slate-800"
+                className="w-60 bg-white dark:bg-slate-900 rounded-2xl p-2 border border-slate-100 dark:border-slate-800"
                 style={Platform.select({
                   ios: { shadowColor: '#0f172a', shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.12, shadowRadius: 24 },
                   android: { elevation: 12 },

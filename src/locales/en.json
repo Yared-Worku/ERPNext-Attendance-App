@@ -34,6 +34,7 @@
   },
   "header": {
     "openProfileMenu": "Open profile menu",
+    "eyebrowCheckin": "Live status",
     "signedInAs": "SIGNED IN AS",
     "language": "Language",
     "history": "Attendance History",

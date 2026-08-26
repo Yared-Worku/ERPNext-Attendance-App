@@ -1,7 +1,7 @@
 {
   "common": {
-    "checkIn": "መግቢያ (Check In)",
-    "checkOut": "መውጫ (Check Out)",
+    "checkIn": "መግቢያ ",
+    "checkOut": "መውጫ ",
     "offlineMode": "ኦፍላይን ሁነታ",
     "success": "ተሳክቷል",
     "error": "ስህተት",
@@ -34,6 +34,7 @@
   },
   "header": {
     "openProfileMenu": "የመገለጫ ምናሌን ክፈት",
+    "eyebrowCheckin": "የአሁኑ ሁኔታ",
     "signedInAs": "በዚህ ገብተዋል",
     "language": "ቋንቋ",
     "history": "የመገኘት ታሪክ",

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import { useTranslation } from 'react-i18next'; // 1. Imported translation hook
+import { useTranslation } from 'react-i18next';
 import { useCheckin } from '../hooks/useCheckin';
 import { useAttendanceHistory } from '../hooks/useAttendanceHistory';
 import { StatusCard } from './StatusCard';
@@ -8,7 +8,8 @@ import { CheckinButton } from './CheckinButton';
 import { OfflineBanner } from './OfflineBanner';
 
 export const CheckinPanel = () => {
-  const { t } = useTranslation(); // 2. Initialized the hook
+  // 1. Grabbed i18n alongside t
+  const { t, i18n } = useTranslation(); 
   const { handleCheckin, loading, pendingCount, syncQueue, isSyncing } = useCheckin();
   const { logs, onRefresh } = useAttendanceHistory();
 
@@ -36,7 +37,8 @@ export const CheckinPanel = () => {
     if (!timeValue) return '-- : --';
     const date = new Date(timeValue);
     if (isNaN(date.getTime())) return '-- : --';
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    // 2. Passed i18n.language here so the time translates to Amharic numerals/format!
+    return date.toLocaleTimeString(i18n.language, { hour: '2-digit', minute: '2-digit' });
   };
 
   const onCheckinPress = async (type: 'IN' | 'OUT') => {
@@ -62,27 +64,31 @@ export const CheckinPanel = () => {
 
       <View className="bg-white dark:bg-slate-800 rounded-3xl p-5 border border-slate-100 dark:border-slate-700 shadow-sm">
         <Text className="text-slate-900 dark:text-white font-bold text-base mb-4">
-          {t('attendance.todaySummary', "Today's Log Summary")} {/* 3. Applied translation */}
+          {t('attendance.todaySummary', "Today's Log Summary")}
         </Text>
 
         <View className="flex-row justify-between items-center py-3 border-b border-slate-100 dark:border-slate-700">
           <View className="flex-row items-center">
             <View className="w-2.5 h-2.5 rounded-full bg-emerald-500 mr-3" />
             <Text className="text-slate-600 dark:text-slate-300 font-medium text-sm">
-              {t('attendance.firstEntry', 'First Entry')} {/* 3. Applied translation */}
+              {t('attendance.firstEntry', 'First Entry')}
             </Text>
           </View>
-          <Text className="text-slate-900 dark:text-white font-bold text-sm">{formatTime(firstEntryLog?.time)}</Text>
+          <Text className="text-slate-900 dark:text-white font-bold text-sm">
+            {formatTime(firstEntryLog?.time)}
+          </Text>
         </View>
 
         <View className="flex-row justify-between items-center pt-3">
           <View className="flex-row items-center">
             <View className="w-2.5 h-2.5 rounded-full bg-rose-500 mr-3" />
             <Text className="text-slate-600 dark:text-slate-300 font-medium text-sm">
-              {t('attendance.lastExit', 'Last Exit')} {/* 3. Applied translation */}
+              {t('attendance.lastExit', 'Last Exit')}
             </Text>
           </View>
-          <Text className="text-slate-900 dark:text-white font-bold text-sm">{formatTime(lastExitLog?.time)}</Text>
+          <Text className="text-slate-900 dark:text-white font-bold text-sm">
+            {formatTime(lastExitLog?.time)}
+          </Text>
         </View>
       </View>
     </ScrollView>
