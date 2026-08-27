@@ -16,6 +16,8 @@ export const LeaveScreen = ({ navigation }: Props) => {
       <Header
         title={t('leave.title', 'Leave Management')}
         currentScreen="Leave"
+                showBack
+        onBackPress={() => navigation.goBack()}
         onNavigateHistory={() => navigation.navigate('History')}
         onNavigateLeave={() => {}} // Already on Leave screen
       />

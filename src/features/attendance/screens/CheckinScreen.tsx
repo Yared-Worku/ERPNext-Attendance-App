@@ -17,6 +17,7 @@ export const CheckinScreen = ({ navigation }: Props) => {
         title={t('common.attendance')} // 3. Use the translation key!
         currentScreen="Checkin"
         onNavigateHistory={() => navigation.navigate('History')}
+        onNavigateLeave={() => navigation.navigate('Leave')}
       />
       <CheckinPanel />
     </SafeAreaView>

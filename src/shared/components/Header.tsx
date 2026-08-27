@@ -18,7 +18,7 @@ interface HeaderProps {
   showBack?: boolean;
   onBackPress?: () => void;
   onNavigateHistory?: () => void;
-  onNavigateLeave?: () => void; // 1. Added optional leave navigation prop
+  onNavigateLeave?: () => void; 
   currentScreen?: 'Checkin' | 'History' | 'Leave'; // 2. Added 'Leave' to screen types
 }
 

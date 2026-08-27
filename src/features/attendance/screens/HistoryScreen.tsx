@@ -18,6 +18,7 @@ export const HistoryScreen = ({ navigation }: Props) => {
         currentScreen="History"
         showBack
         onBackPress={() => navigation.goBack()}
+        onNavigateLeave={() => navigation.navigate('Leave')}
       />
       <HistoryList />
     </SafeAreaView>
