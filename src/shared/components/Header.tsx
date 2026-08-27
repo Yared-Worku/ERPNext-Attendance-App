@@ -18,11 +18,11 @@ interface HeaderProps {
   showBack?: boolean;
   onBackPress?: () => void;
   onNavigateHistory?: () => void;
-  currentScreen?: 'Checkin' | 'History';
+  onNavigateLeave?: () => void; // 1. Added optional leave navigation prop
+  currentScreen?: 'Checkin' | 'History' | 'Leave'; // 2. Added 'Leave' to screen types
 }
 
 // Deterministic accent per user — gives every account a stable, distinct identity
-// color instead of every avatar looking identical.
 const AVATAR_RING_COLORS = [
   '#6366F1', // indigo
   '#0EA5E9', // sky
@@ -43,6 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
   showBack = false,
   onBackPress,
   onNavigateHistory,
+  onNavigateLeave,
   currentScreen = 'Checkin',
 }) => {
   const { t } = useTranslation();
@@ -78,6 +79,12 @@ export const Header: React.FC<HeaderProps> = ({
     logout();
   };
 
+  const getEyebrowText = () => {
+    if (currentScreen === 'Checkin') return t('header.eyebrowCheckin', 'Live status');
+    if (currentScreen === 'History') return t('header.eyebrowHistory', 'Attendance log');
+    return t('leave.title', 'Leave Management');
+  };
+
   return (
     <View
       className="px-5 py-3 flex-row items-center justify-between bg-white/95 dark:bg-slate-950/95 border-b border-slate-200/70 dark:border-slate-800/70 z-50"
@@ -103,7 +110,7 @@ export const Header: React.FC<HeaderProps> = ({
             {displayTitle}
           </Text>
           <Text className="text-[11px] font-medium text-slate-400 dark:text-slate-500 tracking-wide mt-0.5">
-            {currentScreen === 'Checkin' ? t('header.eyebrowCheckin', 'Live status') : t('header.eyebrowHistory', 'Attendance log')}
+            {getEyebrowText()}
           </Text>
         </View>
       </View>
@@ -188,8 +195,8 @@ export const Header: React.FC<HeaderProps> = ({
                   <LanguageSwitcher />
                 </View>
 
-                {/* Quick Navigation Link */}
-                {onNavigateHistory && currentScreen === 'Checkin' && (
+                {/* Quick Navigation Link: History */}
+                {onNavigateHistory && currentScreen !== 'History' && (
                   <TouchableOpacity
                     onPress={() => {
                       setMenuVisible(false);
@@ -200,6 +207,23 @@ export const Header: React.FC<HeaderProps> = ({
                   >
                     <Text className="text-slate-700 dark:text-slate-200 font-semibold text-sm">
                       {t('header.history')}
+                    </Text>
+                    <Text className="text-slate-300 dark:text-slate-600 font-bold text-sm">›</Text>
+                  </TouchableOpacity>
+                )}
+
+                {/* Quick Navigation Link: Leave Management */}
+                {onNavigateLeave && currentScreen !== 'Leave' && (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setMenuVisible(false);
+                      onNavigateLeave();
+                    }}
+                    activeOpacity={0.6}
+                    className="py-3 px-3 rounded-xl mb-1 flex-row items-center justify-between"
+                  >
+                    <Text className="text-slate-700 dark:text-slate-200 font-semibold text-sm">
+                      {t('leave.title', 'Leave Management')}
                     </Text>
                     <Text className="text-slate-300 dark:text-slate-600 font-bold text-sm">›</Text>
                   </TouchableOpacity>

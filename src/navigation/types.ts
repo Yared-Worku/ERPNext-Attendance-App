@@ -6,6 +6,7 @@ export type AuthStackParamList = {
 export type MainStackParamList = {
   Checkin: undefined;
   History: undefined;
+  Leave: undefined;
 };
 
 export type RootStackParamList = {
