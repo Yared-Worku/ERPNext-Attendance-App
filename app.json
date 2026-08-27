@@ -1,7 +1,8 @@
 {
   "plugins": [
     "expo-secure-store",
-    "expo-localization"
+    "expo-localization",
+    "@react-native-community/datetimepicker"
   ],
   "android": {
     "package": "com.anonymous.erpnextattendanceapp"
