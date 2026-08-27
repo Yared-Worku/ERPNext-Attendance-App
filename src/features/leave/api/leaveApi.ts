@@ -85,7 +85,6 @@ const empResponse = await api.get('/api/resource/Employee', {
   
   return response.data.data;
 };
-
 export const fetchLeaveBalances = async (userEmailOrId: string): Promise<LeaveBalance> => {
   try {
     let employeeId = userEmailOrId;
@@ -104,25 +103,29 @@ export const fetchLeaveBalances = async (userEmailOrId: string): Promise<LeaveBa
       }
     }
 
-    const response = await api.get('/api/resource/Leave Allocation', {
+    // Get today's date in YYYY-MM-DD format to calculate active balances as of today
+    const today = new Date().toISOString().split('T')[0];
+
+    // Use the official Frappe HR RPC method instead of querying the raw table.
+    // This bypasses the document visibility block and calculates (Allocated - Taken = Remaining).
+    const response = await api.get('/api/method/hrms.hr.doctype.leave_application.leave_application.get_leave_details', {
       params: {
-        filters: JSON.stringify([['employee', '=', employeeId], ['docstatus', '=', 1]]),
-        fields: JSON.stringify(['leave_type', 'total_leaves_allocated'])
+        employee: employeeId,
+        date: today
       },
     });
 
-    const allocations = response.data.data || [];
-    const balances: LeaveBalance = { annual: 0, sick: 0, casual: 0 };
-    
-    allocations.forEach((item: any) => {
-      if (item.leave_type === 'Annual Leave') balances.annual = item.total_leaves_allocated;
-      if (item.leave_type === 'Sick Leave') balances.sick = item.total_leaves_allocated;
-      if (item.leave_type === 'Casual Leave') balances.casual = item.total_leaves_allocated;
-    });
+    // RPC methods return their payload inside a 'message' object, not 'data'
+    const leaveData = response.data.message?.leave_allocation || {};
 
-    return balances;
+    return {
+      annual: leaveData['Annual Leave']?.remaining_leaves || 0,
+      sick: leaveData['Sick Leave']?.remaining_leaves || 0,
+      casual: leaveData['Casual Leave']?.remaining_leaves || 0,
+    };
+
   } catch (error: any) {
-    console.warn('Failed to fetch leave balances:', error);
+    console.error('Failed to fetch true leave balances:', error.response?.data || error.message);
     return { annual: 0, sick: 0, casual: 0 };
   }
 };
