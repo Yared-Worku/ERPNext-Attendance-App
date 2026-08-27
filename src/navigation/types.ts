@@ -7,6 +7,7 @@ export type MainStackParamList = {
   Checkin: undefined;
   History: undefined;
   Leave: undefined;
+  ApplyLeave: undefined;
 };
 
 export type RootStackParamList = {
