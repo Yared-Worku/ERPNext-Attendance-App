@@ -22,7 +22,7 @@ export const LeaveScreen = ({ navigation }: Props) => {
         onNavigateLeave={() => {}} // Already on Leave screen
       />
       <LeavePanel onNavigateApply={() => {
-        navigation.navigate('ApplyLeave'); // Uncomment when apply screen is ready
+        navigation.navigate('ApplyLeave'); 
       }} />
     </SafeAreaView>
   );
