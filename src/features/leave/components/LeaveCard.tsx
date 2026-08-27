@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 export interface LeaveApplicationItem {
   name: string;
@@ -16,6 +17,8 @@ interface LeaveCardProps {
 }
 
 export const LeaveCard: React.FC<LeaveCardProps> = ({ item }) => {
+  const { t } = useTranslation();
+
   const getStatusBadgeStyle = (status: LeaveApplicationItem['status']) => {
     switch (status) {
       case 'Approved':
@@ -54,15 +57,19 @@ export const LeaveCard: React.FC<LeaveCardProps> = ({ item }) => {
 
       <View className="my-2 py-3 border-t border-b border-slate-100 dark:border-slate-700/60 flex-row justify-between items-center">
         <View>
-          <Text className="text-[10px] uppercase font-semibold text-slate-400">Duration</Text>
+          <Text className="text-[10px] uppercase font-semibold text-slate-400">
+            {t('leave.duration', 'Duration')}
+          </Text>
           <Text className="text-xs font-semibold text-slate-700 dark:text-slate-300 mt-0.5">
-            {item.from_date} → {item.to_date}
+            {item.from_date} {t('common.to', 'to')} {item.to_date}
           </Text>
         </View>
         <View className="items-end">
-          <Text className="text-[10px] uppercase font-semibold text-slate-400">Total Days</Text>
+          <Text className="text-[10px] uppercase font-semibold text-slate-400">
+            {t('leave.totalDays', 'Total Days')}
+          </Text>
           <Text className="text-xs font-bold text-indigo-600 dark:text-indigo-400 mt-0.5">
-            {item.total_leave_days} {item.total_leave_days === 1 ? 'Day' : 'Days'}
+            {item.total_leave_days} {item.total_leave_days === 1 ? t('common.day', 'Day') : t('common.days', 'Days')}
           </Text>
         </View>
       </View>

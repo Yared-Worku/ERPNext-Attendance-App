@@ -8,7 +8,11 @@
     "loading": "በመጫን ላይ...",
     "attendance": "መገኘት",
     "employee": "ሠራተኛ",
-    "back": "ወደ ኋላ ተመለስ"
+    "back": "ወደ ኋላ ተመለስ",
+     "to": "እስከ",
+    "day": "ቀን",
+    "days": "ቀናት",
+    "records": "መዝገቦች"
   },
   "attendance": {
     "checkInSuccess": "በተሳካ ሁኔታ ገብተዋል!",
@@ -49,17 +53,25 @@
   "welcomeBack": "እንኳን ደህና መጡ",
 "signInSubtitle": "ወደ ኢአርፒኔክስት (ERPNext) መገኘት ይግቡ"
 },
-"leave": {
-  "title": "Leave Management",
-  "apply": "Apply for Leave",
-  "leaveType": "Leave Type",
-  "fromDate": "From Date",
-  "toDate": "To Date",
-  "reason": "Reason / Description",
-  "status": {
-    "Open": "Pending Approval",
-    "Approved": "Approved",
-    "Rejected": "Rejected"
+  "leave": {
+    "title": "የፈቃድ አስተዳደር",
+    "applyTitle": "አዲስ የፈቃድ ጥያቄ",
+    "balanceSummary": "የፈቃድ ቀሪ ሂሳብ",
+    "myRequests": "የፈቃድ ታሪክ",
+    "annual": "ዓመታዊ",
+    "sick": "የህመም",
+    "casual": "የግል",
+    "duration": "የቆይታ ጊዜ",
+    "totalDays": "ጠቅላላ ቀናት",
+    "selectType": "የፈቃድ ዓይነት",
+    "durationSection": "የቀናት ብዛት (ወር-ቀን-ዓመት)",
+    "fromDate": "ከእለት",
+    "toDate": "እስከ እለት",
+    "reason": "የፈቃድ ምክንያት",
+    "reasonPlaceholder": "እባክዎ ስለ ፈቃድ ጥያቄዎ ዝርዝር መግለጫ ይስጡ...",
+    "submitButton": "ጥያቄ ላክ",
+    "applyAction": "ፈቃድ ጠይቅ",
+    "noRequests": "ምንም የፈቃድ ጥያቄ አልተገኘም",
+    "noRequestsSub": "አዲስ የፈቃድ ጥያቄ ለማስገባት ከታች ያለውን ቁልፍ ይጫኑ።"
   }
-}
 }

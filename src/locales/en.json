@@ -8,7 +8,11 @@
     "loading": "Loading...",
     "attendance": "Attendance",
     "employee": "Employee",
-    "back": "Go back"
+    "back": "Go back",
+        "to": "to",
+    "day": "Day",
+    "days": "Days",
+    "records": "records"
   },
   "attendance": {
     "checkInSuccess": "Successfully checked IN!",
@@ -49,17 +53,25 @@
   "welcomeBack": "Welcome Back",
 "signInSubtitle": "Sign in to ERPNext Attendance"
 },
-"leave": {
-  "title": "የፈቃድ ጥያቄዎች",
-  "apply": "ፈቃድ ይጠይቁ",
-  "leaveType": "የፈቃድ አይነት",
-  "fromDate": "ከቀን",
-  "toDate": "እስከ ቀን",
-  "reason": "ምክንያት",
-  "status": {
-    "Open": "በሂደት ላይ",
-    "Approved": "ጸድቋል",
-    "Rejected": "ተቀባይነት አላገኘም"
+  "leave": {
+    "title": "Leave Management",
+    "applyTitle": "New Leave Request",
+    "balanceSummary": "Leave Balances",
+    "myRequests": "My Leave History",
+    "annual": "Annual",
+    "sick": "Sick",
+    "casual": "Casual",
+    "duration": "Duration",
+    "totalDays": "Total Days",
+    "selectType": "Leave Type",
+    "durationSection": "Duration Dates (YYYY-MM-DD)",
+    "fromDate": "From Date",
+    "toDate": "To Date",
+    "reason": "Reason for Leave",
+    "reasonPlaceholder": "Provide details or description for your leave request...",
+    "submitButton": "Submit Application",
+    "applyAction": "Apply Leave",
+    "noRequests": "No leave applications found",
+    "noRequestsSub": "Tap the button below to submit a new leave request."
   }
-}
 }

@@ -48,7 +48,8 @@ export const LeavePanel: React.FC<LeavePanelProps> = ({ onNavigateApply }) => {
   return (
     <View className="flex-1 relative">
       <ScrollView
-        contentContainerClassName="p-6 pb-24"
+        // Increased bottom padding so the last card is fully scrollable above the button
+        contentContainerClassName="p-6 pb-36"
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#6366F1" />
         }
@@ -82,9 +83,9 @@ export const LeavePanel: React.FC<LeavePanelProps> = ({ onNavigateApply }) => {
         )}
       </ScrollView>
 
-      {/* Floating Action Button to trigger application form */}
+      {/* Floating Action Button with increased bottom offset */}
       <View
-        className="absolute bottom-6 right-6"
+        className="absolute bottom-20 right-8 z-50"
         style={Platform.select({
           ios: { shadowColor: '#6366F1', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.35, shadowRadius: 8 },
           android: { elevation: 8 },

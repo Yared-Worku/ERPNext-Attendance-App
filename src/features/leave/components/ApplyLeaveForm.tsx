@@ -15,16 +15,16 @@ interface ApplyLeaveFormProps {
 }
 
 const LEAVE_TYPES = [
-  { label: 'Annual Leave', value: 'Annual Leave' },
-  { label: 'Sick Leave', value: 'Sick Leave' },
-  { label: 'Casual Leave', value: 'Casual Leave' },
+  { key: 'Annual Leave', labelKey: 'leave.annual', fallback: 'Annual' },
+  { key: 'Sick Leave', labelKey: 'leave.sick', fallback: 'Sick' },
+  { key: 'Casual Leave', labelKey: 'leave.casual', fallback: 'Casual' },
 ];
 
 export const ApplyLeaveForm: React.FC<ApplyLeaveFormProps> = ({ onSuccess }) => {
   const { t } = useTranslation();
 
   const [selectedType, setSelectedType] = useState('Annual Leave');
-  const [fromDate, setFromDate] = useState('2026-09-10'); // Default format YYYY-MM-DD for ERPNext
+  const [fromDate, setFromDate] = useState('2026-09-10');
   const [toDate, setToDate] = useState('2026-09-12');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
@@ -69,11 +69,11 @@ export const ApplyLeaveForm: React.FC<ApplyLeaveFormProps> = ({ onSuccess }) => 
         </Text>
         <View className="flex-row space-x-2">
           {LEAVE_TYPES.map((type) => {
-            const isSelected = selectedType === type.value;
+            const isSelected = selectedType === type.key;
             return (
               <TouchableOpacity
-                key={type.value}
-                onPress={() => setSelectedType(type.value)}
+                key={type.key}
+                onPress={() => setSelectedType(type.key)}
                 activeOpacity={0.7}
                 className={`flex-1 py-3 px-3 rounded-2xl border items-center justify-center ${
                   isSelected
@@ -86,7 +86,7 @@ export const ApplyLeaveForm: React.FC<ApplyLeaveFormProps> = ({ onSuccess }) => 
                     isSelected ? 'text-white' : 'text-slate-700 dark:text-slate-200'
                   }`}
                 >
-                  {type.label.split(' ')[0]}
+                  {t(type.labelKey, type.fallback)}
                 </Text>
               </TouchableOpacity>
             );
