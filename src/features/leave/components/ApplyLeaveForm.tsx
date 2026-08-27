@@ -61,7 +61,6 @@ export const ApplyLeaveForm: React.FC<ApplyLeaveFormProps> = ({ onSuccess }) => 
     } catch (error: any) {
       console.error('Failed to submit leave application:', error);
       Alert.alert(t('common.error', 'Error'), error?.message || t('leave.submitError', 'Failed to submit application. Try again.'));
-      Alert.alert("Submission Failed", error.message);
     } finally {
       setLoading(false);
     }
