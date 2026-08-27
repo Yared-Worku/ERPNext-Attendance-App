@@ -47,7 +47,7 @@ export const submitLeaveApplication = async (data: LeaveApplication, userIdentif
     const isEmail = userIdentifier.includes('@');
     const filterField = isEmail ? 'user_id' : 'name';
     
-const empResponse = await api.get('/api/resource/Employee', {
+    const empResponse = await api.get('/api/resource/Employee', {
       params: {
         filters: JSON.stringify([[filterField, '=', userIdentifier]]),
         // MUST include 'leave_approver' here:
@@ -73,18 +73,49 @@ const empResponse = await api.get('/api/resource/Employee', {
     throw new Error(`No Leave Approver is assigned to employee ${employeeId}. Please configure a Leave Approver in ERPNext first.`);
   }
 
-  // 3. Post the valid payload
-  const response = await api.post('/api/resource/Leave Application', {
-    employee: employeeId,
-    leave_approver: leaveApprover,
-    leave_type: data.leave_type,
-    from_date: data.from_date,
-    to_date: data.to_date,
-    description: data.description,
-  });
-  
-  return response.data.data;
+  // 3. Post the valid payload and catch Frappe-specific errors
+  try {
+    const response = await api.post('/api/resource/Leave Application', {
+      employee: employeeId,
+      leave_approver: leaveApprover,
+      leave_type: data.leave_type,
+      from_date: data.from_date,
+      to_date: data.to_date,
+      description: data.description,
+    });
+    
+    return response.data.data;
+  } catch (error: any) {
+    let errorMessage = 'An unexpected error occurred while submitting your leave application.';
+
+    // Dig into the Axios error to find Frappe's specific error message payload
+    if (error.response?.data) {
+      const responseData = error.response.data;
+
+      if (responseData._server_messages) {
+        try {
+          // Frappe returns an array of stringified JSON objects
+          const messages = JSON.parse(responseData._server_messages);
+          if (messages.length > 0) {
+            const firstMessageObj = JSON.parse(messages[0]);
+            // Extract the message and strip out any HTML tags (like <b>) Frappe includes
+            errorMessage = firstMessageObj.message.replace(/<[^>]*>?/gm, '');
+          }
+        } catch (parseError) {
+          console.warn('Failed to parse Frappe server messages');
+        }
+      } else if (responseData.exc_type) {
+        errorMessage = `Server Error: ${responseData.exc_type}`;
+      }
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+
+    // Throw the cleaned-up string so your UI (React component) can display it directly
+    throw new Error(errorMessage);
+  }
 };
+
 export const fetchLeaveBalances = async (userEmailOrId: string): Promise<LeaveBalance> => {
   try {
     let employeeId = userEmailOrId;
