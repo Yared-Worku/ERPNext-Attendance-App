@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-interface LeaveBalance {
+export interface LeaveBalance {
   annual: number;
   sick: number;
   casual: number;
@@ -12,10 +12,11 @@ interface LeaveBalanceCardProps {
   balances?: LeaveBalance;
 }
 
-export const LeaveBalanceCard: React.FC<LeaveBalanceCardProps> = ({
-  balances = { annual: 14, sick: 8, casual: 3 },
-}) => {
+export const LeaveBalanceCard: React.FC<LeaveBalanceCardProps> = ({ balances }) => {
   const { t } = useTranslation();
+
+  // Safe fallback if balances are loading or undefined
+  const data = balances || { annual: 0, sick: 0, casual: 0 };
 
   return (
     <View className="bg-white dark:bg-slate-800 rounded-3xl p-5 mb-6 border border-slate-100 dark:border-slate-700 shadow-sm">
@@ -28,7 +29,7 @@ export const LeaveBalanceCard: React.FC<LeaveBalanceCardProps> = ({
             {t('leave.annual', 'Annual')}
           </Text>
           <Text className="text-slate-900 dark:text-white text-lg font-bold mt-0.5">
-            {balances.annual}
+            {data.annual}
           </Text>
         </View>
         <View className="flex-1 bg-emerald-50/60 dark:bg-emerald-950/30 p-3 rounded-2xl mx-1 border border-emerald-100 dark:border-emerald-900/50">
@@ -36,7 +37,7 @@ export const LeaveBalanceCard: React.FC<LeaveBalanceCardProps> = ({
             {t('leave.sick', 'Sick')}
           </Text>
           <Text className="text-slate-900 dark:text-white text-lg font-bold mt-0.5">
-            {balances.sick}
+            {data.sick}
           </Text>
         </View>
         <View className="flex-1 bg-purple-50/60 dark:bg-purple-950/30 p-3 rounded-2xl ml-2 border border-purple-100 dark:border-purple-900/50">
@@ -44,7 +45,7 @@ export const LeaveBalanceCard: React.FC<LeaveBalanceCardProps> = ({
             {t('leave.casual', 'Casual')}
           </Text>
           <Text className="text-slate-900 dark:text-white text-lg font-bold mt-0.5">
-            {balances.casual}
+            {data.casual}
           </Text>
         </View>
       </View>

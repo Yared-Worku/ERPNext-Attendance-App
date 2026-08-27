@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { submitLeaveApplication } from '../api/leaveApi';
+import { useAuthStore } from '../../../store'; // Adjust path if necessary
 import {
   View,
   Text,
@@ -22,6 +24,7 @@ const LEAVE_TYPES = [
 
 export const ApplyLeaveForm: React.FC<ApplyLeaveFormProps> = ({ onSuccess }) => {
   const { t } = useTranslation();
+  const user = useAuthStore((state: any) => state.user);
 
   const [selectedType, setSelectedType] = useState('Annual Leave');
   const [fromDate, setFromDate] = useState('2026-09-10');
@@ -37,29 +40,31 @@ export const ApplyLeaveForm: React.FC<ApplyLeaveFormProps> = ({ onSuccess }) => 
 
     setLoading(true);
     try {
-      // TODO: Replace with your actual ERPNext API call, e.g.:
-      // await apiClient.post('/api/resource/Leave Application', {
-      //   leave_type: selectedType,
-      //   from_date: fromDate,
-      //   to_date: toDate,
-      //   description: description,
-      // });
+      // 3. Resolve the user identifier
+      const userIdentifier = typeof user === 'string' 
+        ? user 
+        : (user as any)?.user || (user as any)?.employee;
 
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated network request
+      // 4. Pass the userIdentifier as the second argument
+      await submitLeaveApplication({
+        leave_type: selectedType,
+        from_date: fromDate,
+        to_date: toDate,
+        description: description,
+      }, userIdentifier);
       
       Alert.alert(
         t('common.success', 'Success'),
         t('leave.submitSuccess', 'Leave application submitted successfully!'),
         [{ text: 'OK', onPress: () => onSuccess?.() }]
       );
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to submit leave application:', error);
-      Alert.alert(t('common.error', 'Error'), t('leave.submitError', 'Failed to submit application. Try again.'));
+      Alert.alert(t('common.error', 'Error'), error?.message || t('leave.submitError', 'Failed to submit application. Try again.'));
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <ScrollView contentContainerClassName="p-6 pb-24">
       {/* Leave Type Selector */}

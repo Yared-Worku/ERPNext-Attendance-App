@@ -3,7 +3,7 @@ import { View, Text, ScrollView, RefreshControl, TouchableOpacity, Platform, Act
 import { useTranslation } from 'react-i18next';
 import { LeaveCard } from './LeaveCard';
 import { LeaveBalanceCard } from './LeaveBalanceCard';
-import { useLeave } from '../hooks/useLeave'; // Adjust import path if needed based on your file structure
+import { useLeave } from '../hooks/useLeave'; 
 
 interface LeavePanelProps {
   onNavigateApply?: () => void;
@@ -11,7 +11,7 @@ interface LeavePanelProps {
 
 export const LeavePanel: React.FC<LeavePanelProps> = ({ onNavigateApply }) => {
   const { t } = useTranslation();
-  const { leaves, loading, loadLeaves } = useLeave();
+  const { leaves, balances, loading, loadLeaves } = useLeave();
 
   return (
     <View className="flex-1 relative">
@@ -22,8 +22,8 @@ export const LeavePanel: React.FC<LeavePanelProps> = ({ onNavigateApply }) => {
           <RefreshControl refreshing={loading} onRefresh={loadLeaves} tintColor="#6366F1" />
         }
       >
-        {/* Leave Balances Summary Widget Component */}
-        <LeaveBalanceCard />
+        {/* Leave Balances Summary Widget Component with live balances passed */}
+        <LeaveBalanceCard balances={balances} />
 
         {/* Section Heading */}
         <View className="flex-row items-center justify-between mb-4 px-1">
