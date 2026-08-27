@@ -48,5 +48,18 @@
   "signIn": "ግባ",
   "welcomeBack": "እንኳን ደህና መጡ",
 "signInSubtitle": "ወደ ኢአርፒኔክስት (ERPNext) መገኘት ይግቡ"
+},
+"leave": {
+  "title": "Leave Management",
+  "apply": "Apply for Leave",
+  "leaveType": "Leave Type",
+  "fromDate": "From Date",
+  "toDate": "To Date",
+  "reason": "Reason / Description",
+  "status": {
+    "Open": "Pending Approval",
+    "Approved": "Approved",
+    "Rejected": "Rejected"
+  }
 }
 }

@@ -48,5 +48,18 @@
   "signIn": "Sign In",
   "welcomeBack": "Welcome Back",
 "signInSubtitle": "Sign in to ERPNext Attendance"
+},
+"leave": {
+  "title": "የፈቃድ ጥያቄዎች",
+  "apply": "ፈቃድ ይጠይቁ",
+  "leaveType": "የፈቃድ አይነት",
+  "fromDate": "ከቀን",
+  "toDate": "እስከ ቀን",
+  "reason": "ምክንያት",
+  "status": {
+    "Open": "በሂደት ላይ",
+    "Approved": "ጸድቋል",
+    "Rejected": "ተቀባይነት አላገኘም"
+  }
 }
 }
