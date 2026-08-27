@@ -6,13 +6,22 @@ export interface LeaveApplication {
   from_date: string;
   to_date: string;
   description: string;
+  total_leave_days?: number; // <--- Add this property
   status?: 'Open' | 'Approved' | 'Rejected' | 'Cancelled';
 }
 
 export const fetchLeaveApplications = async () => {
   const response = await api.get('/api/resource/Leave Application', {
     params: {
-      fields: JSON.stringify(['name', 'leave_type', 'from_date', 'to_date', 'description', 'status']),
+      fields: JSON.stringify([
+        'name', 
+        'leave_type', 
+        'from_date', 
+        'to_date', 
+        'description', 
+        'status', 
+        'total_leave_days' // <--- Include it in fetch fields
+      ]),
       order_by: 'creation desc',
     },
   });

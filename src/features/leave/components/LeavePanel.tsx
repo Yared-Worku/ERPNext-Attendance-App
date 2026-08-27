@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, RefreshControl, TouchableOpacity, Platform } from 'react-native';
+import React from 'react';
+import { View, Text, ScrollView, RefreshControl, TouchableOpacity, Platform, ActivityIndicator } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { LeaveCard, LeaveApplicationItem } from './LeaveCard';
+import { LeaveCard } from './LeaveCard';
 import { LeaveBalanceCard } from './LeaveBalanceCard';
+import { useLeave } from '../hooks/useLeave'; // Adjust import path if needed based on your file structure
 
 interface LeavePanelProps {
   onNavigateApply?: () => void;
@@ -10,48 +11,15 @@ interface LeavePanelProps {
 
 export const LeavePanel: React.FC<LeavePanelProps> = ({ onNavigateApply }) => {
   const { t } = useTranslation();
-  const [refreshing, setRefreshing] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  // Mock list mirroring Frappe Leave Application data structure
-  const [leaveList, setLeaveList] = useState<LeaveApplicationItem[]>([
-    {
-      name: 'HR-LAP-2026-00042',
-      leave_type: 'Annual Leave',
-      from_date: '2026-09-10',
-      to_date: '2026-09-15',
-      total_leave_days: 5,
-      status: 'Approved',
-      description: 'Family vacation and personal rest.',
-    },
-    {
-      name: 'HR-LAP-2026-00038',
-      leave_type: 'Sick Leave',
-      from_date: '2026-08-02',
-      to_date: '2026-08-03',
-      total_leave_days: 2,
-      status: 'Open',
-      description: 'Medical checkup and recovery.',
-    },
-  ]);
-
-  const onRefresh = async () => {
-    setRefreshing(true);
-    // TODO: Connect your actual useLeave hook or API action here
-    setTimeout(() => setRefreshing(false), 800);
-  };
-
-  useEffect(() => {
-    onRefresh();
-  }, []);
+  const { leaves, loading, loadLeaves } = useLeave();
 
   return (
     <View className="flex-1 relative">
       <ScrollView
-        // Increased bottom padding so the last card is fully scrollable above the button
-        contentContainerClassName="p-6 pb-36"
+        // Tighter bottom padding to minimize the gap above the floating button
+        contentContainerClassName="p-6 pb-20"
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#6366F1" />
+          <RefreshControl refreshing={loading} onRefresh={loadLeaves} tintColor="#6366F1" />
         }
       >
         {/* Leave Balances Summary Widget Component */}
@@ -63,12 +31,16 @@ export const LeavePanel: React.FC<LeavePanelProps> = ({ onNavigateApply }) => {
             {t('leave.myRequests', 'My Leave History')}
           </Text>
           <Text className="text-xs text-slate-400 dark:text-slate-600 font-medium">
-            {leaveList.length} {t('common.records', 'records')}
+            {leaves.length} {t('common.records', 'records')}
           </Text>
         </View>
 
-        {/* Leave Requests List */}
-        {leaveList.length === 0 ? (
+        {/* Leave Requests List or Loading/Empty States */}
+        {loading && leaves.length === 0 ? (
+          <View className="py-16 items-center justify-center">
+            <ActivityIndicator size="small" color="#6366F1" />
+          </View>
+        ) : leaves.length === 0 ? (
           <View className="bg-white dark:bg-slate-800 rounded-3xl p-8 items-center justify-center border border-slate-100 dark:border-slate-700">
             <Text className="text-3xl mb-2">🏝️</Text>
             <Text className="text-slate-800 dark:text-slate-200 font-semibold text-base">
@@ -79,11 +51,21 @@ export const LeavePanel: React.FC<LeavePanelProps> = ({ onNavigateApply }) => {
             </Text>
           </View>
         ) : (
-          leaveList.map((item) => <LeaveCard key={item.name} item={item} />)
+          leaves.map((item) => (
+            <LeaveCard 
+              key={item.name || item.from_date} 
+              item={{
+                ...item,
+                name: item.name || 'TEMP-ID',
+                total_leave_days: item.total_leave_days || 0,
+                status: item.status || 'Open' // Fallback guarantee for status
+              }} 
+            />
+          ))
         )}
       </ScrollView>
 
-      {/* Floating Action Button with increased bottom offset */}
+      {/* Floating Action Button positioned closer to the last card */}
       <View
         className="absolute bottom-20 right-8 z-50"
         style={Platform.select({
