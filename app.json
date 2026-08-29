@@ -1,10 +1,33 @@
 {
-  "plugins": [
-    "expo-secure-store",
-    "expo-localization",
-    "@react-native-community/datetimepicker"
-  ],
-  "android": {
-    "package": "com.anonymous.erpnextattendanceapp"
+  "expo": {
+    "name": "ERPNext Attendance",
+    "slug": "erpnext-attendance-app",
+    "version": "1.0.0",
+    "android": {
+      "package": "com.yared.erpnextattendanceapp",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT"
+      ]
+    },
+    "plugins": [
+      "expo-secure-store",
+      "expo-localization",
+      "@react-native-community/datetimepicker",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow ERPNext Attendance to access your location for office check-in validation."
+        }
+      ],
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow ERPNext Attendance to authenticate using biometrics."
+        }
+      ]
+    ]
   }
 }
