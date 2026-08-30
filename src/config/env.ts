@@ -4,5 +4,6 @@ export const ENV = {
   ENDPOINTS: {
     LOGIN: '/api/method/login',
     CHECKIN: '/api/method/hrms.hr.doctype.employee_checkin.employee_checkin.add_log_based_on_employee_field',
+    HISTROY: '/api/resource/Employee Checkin',
   },
 };

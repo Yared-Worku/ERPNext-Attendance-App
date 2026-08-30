@@ -110,7 +110,7 @@ export const postEmployeeCheckin = async (payload: CheckinPayload) => {
 };
 
 export const getAttendanceHistory = async (): Promise<CheckinRecord[]> => {
-  const response = await apiClient.get('/api/resource/Employee Checkin', {
+  const response = await apiClient.get(ENV.ENDPOINTS.HISTROY, {
     params: {
       fields: JSON.stringify(['name', 'time', 'log_type', 'employee', 'employee_name', 'device_id']),
       order_by: 'time desc',
