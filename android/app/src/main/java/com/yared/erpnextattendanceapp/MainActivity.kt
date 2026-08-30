@@ -1,4 +1,4 @@
-package com.anonymous.erpnextattendanceapp
+package com.yared.erpnextattendanceapp
 
 import android.os.Build
 import android.os.Bundle

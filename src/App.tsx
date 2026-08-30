@@ -2,8 +2,8 @@ import '../src/locales/i18n';
 import React, { useEffect, useMemo } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { DefaultTheme, DarkTheme, NavigationContainer } from '@react-navigation/native';
-import { useColorScheme } from 'nativewind'; // IMPORT FROM NATIVEWIND
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Added this import
+import { useColorScheme } from 'nativewind'; 
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 import { RootNavigator } from './navigation/RootNavigator';
 import { useAuthStore } from './store';
 import { getSavedSession } from './services/storage/sessionStorage';
