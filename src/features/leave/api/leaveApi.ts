@@ -1,4 +1,5 @@
 import { apiClient as api } from '../../../services/api/client';
+import { ENV } from '../../../config/env';
 
 export interface LeaveApplication {
   name?: string;
@@ -17,7 +18,7 @@ export interface LeaveBalance {
 }
 
 export const fetchLeaveApplications = async () => {
-  const response = await api.get('/api/resource/Leave Application', {
+  const response = await api.get(ENV.ENDPOINTS.LEAVE_APPLICATION, {
     params: {
       fields: JSON.stringify([
         'name', 
@@ -47,7 +48,7 @@ export const submitLeaveApplication = async (data: LeaveApplication, userIdentif
     const isEmail = userIdentifier.includes('@');
     const filterField = isEmail ? 'user_id' : 'name';
     
-    const empResponse = await api.get('/api/resource/Employee', {
+    const empResponse = await api.get(ENV.ENDPOINTS.LEAVE_BALANCE, {
       params: {
         filters: JSON.stringify([[filterField, '=', userIdentifier]]),
         // MUST include 'leave_approver' here:
@@ -75,7 +76,7 @@ export const submitLeaveApplication = async (data: LeaveApplication, userIdentif
 
   // 3. Post the valid payload and catch Frappe-specific errors
   try {
-    const response = await api.post('/api/resource/Leave Application', {
+    const response = await api.post(ENV.ENDPOINTS.LEAVE_APPLICATION, {
       employee: employeeId,
       leave_approver: leaveApprover,
       leave_type: data.leave_type,
@@ -122,7 +123,7 @@ export const fetchLeaveBalances = async (userEmailOrId: string): Promise<LeaveBa
 
     // Lookup the actual Employee record ID if an email is passed
     if (userEmailOrId.includes('@')) {
-      const empResponse = await api.get('/api/resource/Employee', {
+      const empResponse = await api.get(ENV.ENDPOINTS.LEAVE_BALANCE, {
         params: {
           filters: JSON.stringify([['user_id', '=', userEmailOrId]]),
           fields: JSON.stringify(['name'])
@@ -139,7 +140,7 @@ export const fetchLeaveBalances = async (userEmailOrId: string): Promise<LeaveBa
 
     // Use the official Frappe HR RPC method instead of querying the raw table.
     // This bypasses the document visibility block and calculates (Allocated - Taken = Remaining).
-    const response = await api.get('/api/method/hrms.hr.doctype.leave_application.leave_application.get_leave_details', {
+    const response = await api.get(ENV.ENDPOINTS.LEAVE_DETAIL, {
       params: {
         employee: employeeId,
         date: today
