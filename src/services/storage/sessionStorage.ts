@@ -7,7 +7,6 @@ export interface SavedSession {
   baseUrl: string;
   user: string;
 }
-
 export const saveSession = async (session: SavedSession): Promise<void> => {
   try {
     await SecureStore.setItemAsync(SESSION_KEY, JSON.stringify(session));
