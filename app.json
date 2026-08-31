@@ -9,7 +9,11 @@
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION",
         "USE_BIOMETRIC",
-        "USE_FINGERPRINT"
+        "USE_FINGERPRINT",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT"
       ]
     },
     "plugins": [
@@ -28,6 +32,11 @@
           "faceIDPermission": "Allow ERPNext Attendance to authenticate using biometrics."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "142e6a59-7c93-4fb4-98d6-af4fa0f83e89"
+      }
+    }
   }
 }
