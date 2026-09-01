@@ -35,8 +35,12 @@ export default function App() {
     };
   }, [isDarkMode, activeColors]);
 
-  // Load Saved Theme
+  // Load Saved Theme and Saved Session
   useEffect(() => {
+        loadSavedTheme();
+        checkSession();
+  }, [setColorScheme]);
+
     const loadSavedTheme = async () => {
       try {
         const savedTheme = await AsyncStorage.getItem('@app_theme');
@@ -47,11 +51,7 @@ export default function App() {
         console.error('Failed to load theme:', error);
       }
     };
-    loadSavedTheme();
-  }, [setColorScheme]);
 
-  // Load Saved Session
-  useEffect(() => {
     const checkSession = async () => {
       const session = await getSavedSession();
       if (session) {
@@ -61,8 +61,6 @@ export default function App() {
         finishSessionCheck();
       }
     };
-    checkSession();
-  }, []);
 
   if (isLoadingSession) {
     return (
