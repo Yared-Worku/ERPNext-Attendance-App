@@ -15,15 +15,10 @@ export default function App() {
   const restoreSession = useAuthStore((state) => state.restoreSession);
   const finishSessionCheck = useAuthStore((state) => state.finishSessionCheck);
   const isLoadingSession = useAuthStore((state) => state.isLoadingSession);
-
-  // 1. Destructure setColorScheme to apply the saved theme on load
   const { colorScheme, setColorScheme } = useColorScheme();
   const isDarkMode = colorScheme === 'dark';
-
-  // 2. Select the correct semantic color palette
   const activeColors = isDarkMode ? darkColors : lightColors;
-
-  // 3. Dynamically construct the React Navigation theme
+  
   const AppTheme = useMemo(() => {
     const baseTheme = isDarkMode ? DarkTheme : DefaultTheme;
     
