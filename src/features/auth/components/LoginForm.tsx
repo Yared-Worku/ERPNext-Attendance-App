@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { useTranslation } from 'react-i18next'; // 1. Imported translation hook
+import { useTranslation } from 'react-i18next'; 
 import { useAuth } from '../hooks/useAuth';
 
 export const LoginForm = () => {
-  const { t } = useTranslation(); // 2. Initialized the hook
+  const { t } = useTranslation(); 
   const [baseUrl, setBaseUrl] = useState('');
   const [usr, setUsr] = useState('');
   const [pwd, setPwd] = useState('');
@@ -18,7 +18,6 @@ export const LoginForm = () => {
     <View className="space-y-4">
       <View>
         <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 ml-1">
-          {/* 3. Applied translation for Site URL */}
           {t('auth.siteUrl', 'Frappe Site URL')}
         </Text>
         <TextInput
@@ -34,7 +33,6 @@ export const LoginForm = () => {
 
       <View>
         <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 ml-1">
-          {/* 3. Applied translation for Username/Email */}
           {t('auth.username', 'Username / Email')}
         </Text>
         <TextInput
@@ -49,7 +47,6 @@ export const LoginForm = () => {
 
       <View>
         <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 ml-1">
-          {/* 3. Applied translation for Password */}
           {t('auth.password', 'Password')}
         </Text>
         <TextInput
@@ -71,7 +68,6 @@ export const LoginForm = () => {
           <ActivityIndicator color="#ffffff" />
         ) : (
           <Text className="text-white font-bold text-lg">
-            {/* 3. Applied translation for Sign In button */}
             {t('auth.signIn', 'Sign In')}
           </Text>
         )}
