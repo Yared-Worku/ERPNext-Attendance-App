@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, FlatList, RefreshControl, ActivityIndicator } from 'react-native';
-import { useTranslation } from 'react-i18next'; // 1. Imported translation hook
+import { useTranslation } from 'react-i18next'; 
 import { useAuthStore } from '../../../store';
 import { useAttendanceHistory } from '../hooks/useAttendanceHistory';
 import { useCheckin } from '../hooks/useCheckin';
@@ -13,7 +13,7 @@ export interface AttendanceRecord {
 }
 
 export const HistoryList = () => {
-  const { t, i18n } = useTranslation(); // 2. Initialized hook and grabbed i18n
+  const { t, i18n } = useTranslation(); 
   const { logs, loading, onRefresh } = useAttendanceHistory();
   const { pendingCount } = useCheckin();
 
@@ -60,14 +60,12 @@ export const HistoryList = () => {
     if (isNaN(date.getTime())) return { dateStr: 'Invalid Date', timeStr: '--:--' };
 
     return {
-      // 3. Passed i18n.language so dates translate to Amharic standards
       dateStr: date.toLocaleDateString(i18n.language, {
         weekday: 'short',
         month: 'short',
         day: 'numeric',
         year: 'numeric',
       }),
-      // 3. Passed i18n.language so times translate correctly
       timeStr: date.toLocaleTimeString(i18n.language, { hour: '2-digit', minute: '2-digit' }),
     };
   };
