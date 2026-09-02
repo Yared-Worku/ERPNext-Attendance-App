@@ -29,7 +29,7 @@ export const useCheckin = () => {
   const queue = rawQueue || EMPTY_QUEUE;
   const addToQueue = useAuthStore((state: any) => state.addToQueue);
 
-  // 1. Stable memoized syncQueue function
+  // Stable memoized syncQueue function
   const syncQueue = useCallback(async () => {
     const { queue: currentQueue = [], removeFromQueue, incrementAttempts } = useAuthStore.getState();
     if (currentQueue.length === 0 || isSyncingRef.current) return;
@@ -59,7 +59,7 @@ export const useCheckin = () => {
     setIsSyncing(false);
   }, []);
 
-  // 2. Mount-only network listener
+  // Mount-only network listener
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
       if (state.isConnected && state.isInternetReachable !== false) {
@@ -70,7 +70,7 @@ export const useCheckin = () => {
     return () => unsubscribe();
   }, [syncQueue]);
 
-  // 3. Stable memoized handleCheckin function with Biometric verification
+  // Stable memoized handleCheckin function with Biometric verification
   const handleCheckin = useCallback(async (logType: 'IN' | 'OUT') => {
     const userEmail =
       typeof user === 'string'
@@ -82,7 +82,7 @@ export const useCheckin = () => {
       return;
     }
 
-    // Step 1: Biometric Verification Guard
+    // Biometric Verification Guard
     const isVerified = await authenticateWithBiometrics(
       `Verify identity to Check ${logType === 'IN' ? 'IN' : 'OUT'}`
     );
@@ -91,7 +91,7 @@ export const useCheckin = () => {
       return; // Stop execution if biometric check fails or is canceled
     }
 
-    // Step 2: Proceed with Location & Attendance Logging
+    // Proceed with Location & Attendance Logging
     setLoading(true);
 
     try {

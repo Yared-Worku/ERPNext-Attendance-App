@@ -22,7 +22,7 @@ export interface CheckinRecord {
 // Fetch ERPNext Employee ID for the user email
 const fetchEmployeeIdByEmail = async (email: string): Promise<string | null> => {
   try {
-    const response = await apiClient.get('/api/resource/Employee', {
+    const response = await apiClient.get(ENV.ENDPOINTS.LEAVE_BALANCE, {  
       params: {
         filters: JSON.stringify([['user_id', '=', email]]),
         fields: JSON.stringify(['name']),
@@ -44,7 +44,7 @@ export const postEmployeeCheckin = async (payload: CheckinPayload) => {
     throw new Error('User email is missing. Please re-login.');
   }
 
-  // 1. Resolve Employee ID matching user_id email
+  // Resolve Employee ID matching user_id email
   const employeeId = await fetchEmployeeIdByEmail(payload.userEmail);
 
   if (!employeeId) {
@@ -55,7 +55,7 @@ export const postEmployeeCheckin = async (payload: CheckinPayload) => {
     ? payload.timestamp.replace('T', ' ').substring(0, 19)
     : new Date().toISOString().replace('T', ' ').substring(0, 19);
 
-  // 2. Pass 'employee' as employee_fieldname
+  // Pass 'employee' as employee_fieldname
   const requestBody = {
     employee_field_value: employeeId,
     employee_fieldname: 'employee',
@@ -66,19 +66,19 @@ export const postEmployeeCheckin = async (payload: CheckinPayload) => {
     device_id: 'Mobile App',
   };
 
-  console.log('=== CHECK-IN REQUEST PAYLOAD ===');
-  console.log('URL:', ENV.ENDPOINTS.CHECKIN);
-  console.log('Body:', JSON.stringify(requestBody, null, 2));
+  // console.log('=== CHECK-IN REQUEST PAYLOAD ===');
+  // console.log('URL:', ENV.ENDPOINTS.CHECKIN);
+  // console.log('Body:', JSON.stringify(requestBody, null, 2));
 
   try {
     const response = await apiClient.post(ENV.ENDPOINTS.CHECKIN, requestBody);
-    console.log('=== CHECK-IN SUCCESS RESPONSE ===');
-    console.log(JSON.stringify(response.data, null, 2));
+    // console.log('=== CHECK-IN SUCCESS RESPONSE ===');
+    // console.log(JSON.stringify(response.data, null, 2));
     return response.data;
   } catch (error: any) {
-    console.log('=== CHECK-IN ERROR DETAILED LOG ===');
-    console.log('Status Code:', error.response?.status);
-    console.log('Response Data:', JSON.stringify(error.response?.data, null, 2));
+    // console.log('=== CHECK-IN ERROR DETAILED LOG ===');
+    // console.log('Status Code:', error.response?.status);
+    // console.log('Response Data:', JSON.stringify(error.response?.data, null, 2));
 
     let extractedMessage = '';
 
