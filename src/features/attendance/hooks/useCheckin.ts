@@ -61,14 +61,13 @@ export const useCheckin = () => {
 
   // Mount-only network listener
   useEffect(() => {
-    return () => unsubscribe();
-  }, [syncQueue]);
-
-      const unsubscribe = NetInfo.addEventListener((state) => {
+          const unsubscribe = NetInfo.addEventListener((state) => {
       if (state.isConnected && state.isInternetReachable !== false) {
         syncQueue();
       }
     });
+    return () => unsubscribe();
+  }, [syncQueue]);
 
   // Stable memoized handleCheckin function with Biometric verification
   const handleCheckin = useCallback(async (logType: 'IN' | 'OUT') => {
