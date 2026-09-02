@@ -9,7 +9,6 @@ export const apiClient = axios.create({
   },
 });
 
-
 export const setBaseUrl = (url: string) => {
   const cleanUrl = url.endsWith('/') ? url.slice(0, -1) : url;
   apiClient.defaults.baseURL = cleanUrl;
