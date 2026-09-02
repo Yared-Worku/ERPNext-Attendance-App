@@ -8,7 +8,6 @@ import { CheckinButton } from './CheckinButton';
 import { OfflineBanner } from './OfflineBanner';
 
 export const CheckinPanel = () => {
-  // 1. Grabbed i18n alongside t
   const { t, i18n } = useTranslation(); 
   const { handleCheckin, loading, pendingCount, syncQueue, isSyncing } = useCheckin();
   const { logs, onRefresh } = useAttendanceHistory();
@@ -37,7 +36,6 @@ export const CheckinPanel = () => {
     if (!timeValue) return '-- : --';
     const date = new Date(timeValue);
     if (isNaN(date.getTime())) return '-- : --';
-    // 2. Passed i18n.language here so the time translates to Amharic numerals/format!
     return date.toLocaleTimeString(i18n.language, { hour: '2-digit', minute: '2-digit' });
   };
 
