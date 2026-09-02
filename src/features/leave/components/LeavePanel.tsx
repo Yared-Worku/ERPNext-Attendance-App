@@ -16,7 +16,6 @@ export const LeavePanel: React.FC<LeavePanelProps> = ({ onNavigateApply }) => {
   return (
     <View className="flex-1 relative">
       <ScrollView
-        // Tighter bottom padding to minimize the gap above the floating button
         contentContainerClassName="p-6 pb-20"
         refreshControl={
           <RefreshControl refreshing={loading} onRefresh={loadLeaves} tintColor="#6366F1" />

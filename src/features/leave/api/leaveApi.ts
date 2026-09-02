@@ -43,7 +43,7 @@ export const submitLeaveApplication = async (data: LeaveApplication, userIdentif
     throw new Error('User context is missing. Please log in again.');
   }
 
-  // 1. Fetch Employee record to get the exact Employee ID and configured Leave Approver
+  // Fetch Employee record to get the exact Employee ID and configured Leave Approver
   try {
     const isEmail = userIdentifier.includes('@');
     const filterField = isEmail ? 'user_id' : 'name';
@@ -51,7 +51,6 @@ export const submitLeaveApplication = async (data: LeaveApplication, userIdentif
     const empResponse = await api.get(ENV.ENDPOINTS.LEAVE_BALANCE, {
       params: {
         filters: JSON.stringify([[filterField, '=', userIdentifier]]),
-        // MUST include 'leave_approver' here:
         fields: JSON.stringify(['name', 'leave_approver']) 
       }
     });
@@ -59,13 +58,13 @@ export const submitLeaveApplication = async (data: LeaveApplication, userIdentif
     const employees = empResponse.data.data || [];
     if (employees.length > 0) {
       employeeId = employees[0].name;
-      leaveApprover = employees[0].leave_approver; // <-- This will now populate correctly
+      leaveApprover = employees[0].leave_approver;
     }
   } catch (e) {
     console.error('Failed to fetch employee details for leave submission:', e);
   }
 
-  // 2. Validate before hitting Frappe so you see a clear message instead of a backend trace error
+  // Validate before hitting Frappe so you see a clear message instead of a backend trace error
   if (!employeeId) {
     throw new Error('Could not resolve an Employee profile for this user.');
   }
@@ -74,7 +73,7 @@ export const submitLeaveApplication = async (data: LeaveApplication, userIdentif
     throw new Error(`No Leave Approver is assigned to employee ${employeeId}. Please configure a Leave Approver in ERPNext first.`);
   }
 
-  // 3. Post the valid payload and catch Frappe-specific errors
+  // Post the valid payload and catch Frappe-specific errors
   try {
     const response = await api.post(ENV.ENDPOINTS.LEAVE_APPLICATION, {
       employee: employeeId,

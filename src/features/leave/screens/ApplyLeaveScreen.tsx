@@ -21,7 +21,6 @@ export const ApplyLeaveScreen = ({ navigation }: Props) => {
       />
       <ApplyLeaveForm
         onSuccess={() => {
-          // Navigate back or refresh history upon successful submission
           navigation.goBack();
         }}
       />
