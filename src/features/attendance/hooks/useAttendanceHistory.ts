@@ -33,6 +33,7 @@ export function useAttendanceHistory() {
         location: log.device_id || 'Mobile App',
         isPendingSync: false,
       }));
+      
       setLogs(formattedLogs);
     } catch (error: any) {
       const msg = error?.message || 'Failed to load attendance history';
