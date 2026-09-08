@@ -80,6 +80,7 @@ export const postEmployeeCheckin = async (payload: CheckinPayload) => {
     // console.log('Status Code:', error.response?.status);
     // console.log('Response Data:', JSON.stringify(error.response?.data, null, 2));
 
+    
     let extractedMessage = '';
 
     if (error.response?.data?._server_messages) {
