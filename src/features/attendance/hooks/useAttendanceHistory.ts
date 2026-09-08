@@ -15,7 +15,6 @@ export function useAttendanceHistory() {
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [logs, setLogs] = useState<UnifiedCheckinItem[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>('');
-
   const fetchLogs = useCallback(async (isRefresh = false) => {
     if (isRefresh) {
       setRefreshing(true);
