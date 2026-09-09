@@ -22,7 +22,6 @@ export function useAttendanceHistory() {
       setLoading(true);
     }
     setErrorMessage('');
-
     try {
       const data = await getAttendanceHistory();
       const formattedLogs: UnifiedCheckinItem[] = data.map((log: CheckinRecord) => ({
