@@ -68,7 +68,6 @@ export const useCheckin = () => {
     });
     return () => unsubscribe();
   }, [syncQueue]);
-
   // Stable memoized handleCheckin function with Biometric verification
   const handleCheckin = useCallback(async (logType: 'IN' | 'OUT') => {
     const userEmail =
