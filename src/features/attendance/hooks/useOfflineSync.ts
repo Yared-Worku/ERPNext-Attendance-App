@@ -23,7 +23,6 @@ export const useOfflineSync = () => {
   const removeFromQueue = useAuthStore(
     (state: any) => state.removeFromQueue || state.popQueueItem
   );
-
   // Track previous connection state to detect transition from offline -> online
   const wasOffline = useRef<boolean>(false);
 
