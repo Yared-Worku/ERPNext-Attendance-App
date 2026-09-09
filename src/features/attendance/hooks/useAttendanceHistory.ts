@@ -45,7 +45,6 @@ export function useAttendanceHistory() {
   useEffect(() => {
     fetchLogs();
   }, [fetchLogs]);
-
   return {
     loading,
     refreshing,
