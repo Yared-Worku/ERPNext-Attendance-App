@@ -64,9 +64,8 @@ export const useOfflineSync = () => {
     setIsSyncing(false);
   }, [offlineQueue, isSyncing, removeFromQueue]);
 
-  /**
-   * Listen to network reachability changes
-   */
+   // Listen to network reachability changes
+
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state: NetInfoState) => {
       const isOnline = Boolean(state.isConnected && state.isInternetReachable !== false);
