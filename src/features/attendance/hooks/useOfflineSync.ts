@@ -12,7 +12,6 @@ export interface QueuedCheckin {
   latitude?: number;
   longitude?: number;
 }
-
 export const useOfflineSync = () => {
   const [isSyncing, setIsSyncing] = useState(false);
   const [isConnected, setIsConnected] = useState<boolean | null>(true);
