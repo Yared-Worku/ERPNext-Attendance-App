@@ -33,7 +33,6 @@ export const useOfflineSync = () => {
     if (isSyncing || offlineQueue.length === 0) return;
 
     setIsSyncing(true);
-
     // Make a shallow copy of the current queue snapshot
     const queueToProcess = [...offlineQueue];
 
