@@ -60,7 +60,6 @@ export const useOfflineSync = () => {
         break;
       }
     }
-
     setIsSyncing(false);
   }, [offlineQueue, isSyncing, removeFromQueue]);
    // Listen to network reachability changes
