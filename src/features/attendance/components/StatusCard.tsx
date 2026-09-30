@@ -41,7 +41,6 @@ export const StatusCard = () => {
             {t('attendance.gpsReady', 'GPS Ready')} 
           </Text>
         </View>
-        
       </View>
 
       <Text className="text-white text-4xl font-extrabold tracking-tight">
