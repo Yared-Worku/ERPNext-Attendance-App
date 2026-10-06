@@ -16,7 +16,6 @@ export const HistoryList = () => {
   const { t, i18n } = useTranslation(); 
   const { logs, loading, onRefresh } = useAttendanceHistory();
   const { pendingCount } = useCheckin();
-
   const offlineQueue = useAuthStore(
     (state: any) => state.offlineQueue || state.pendingQueue || state.queue || []
   );
